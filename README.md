@@ -1,4 +1,4 @@
-# ogv
+# OGV
 <p align="center">
   <img src="https://github.com/geowe/ogv/blob/master/screenshot.png">
 </p>
