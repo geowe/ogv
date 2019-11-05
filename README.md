@@ -18,12 +18,12 @@ Open Geodata Viewer es un visor de mapas abierto y online. Proyecto de software 
 - Zoom del mapa personalizado durante la carga.
 - Estilos de visualización: paleta de colores, transparencia, etiquetado.
 - Compartir mapa por URL.
-- Widget de mapa.
+- Widget de mapa para embeber tus mapas en cualquier web.
 - Diferentes opciones de título de mapa.
-- Soporte de estilos SLD.
-- Mapas de agrupados.
-- Mapas de calor.
-- Mapas temáticos/coropléticos.
+- Soporte de estilos **SLD**.
+- Mapas de agrupados (**cluster**).
+- Mapas de calor (**heatmap**).
+- Mapas **temáticos/coropléticos**.
 - Leyenda de mapa. Soporta configuración tanto vertical como en horizontal, y se personaliza en función del tipo de mapa.
 - Vista de mapa general (overview). Permite la congiuración de su tamaño.
 - Vista de mapa a pantalla completa (fullscreen).
