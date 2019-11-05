@@ -3,7 +3,7 @@
   <img src="https://github.com/geowe/ogv/blob/master/screenshot.png">
 </p>
 
-Open Geodata Viewer es un proyecto <b>Open Source</b> de un visor de mapas abierto online. Para conocer más acerca del proyecto puedes acceder a los siguientes enlaces:
+Open Geodata Viewer es un visor de mapas abierto y online. Proyecto de software libre. Para conocer más acerca del proyecto puedes acceder a los siguientes enlaces:
 
 - [Web del proyecto](http://ogv.geowe.org/)
 - [Visor en vivo](https://geowe.org/ogv/viewer/?add-layer)
@@ -24,7 +24,7 @@ Open Geodata Viewer es un proyecto <b>Open Source</b> de un visor de mapas abier
 - Mapas de agrupados.
 - Mapas de calor.
 - Mapas temáticos/coropléticos.
-- Leyenda de mapa. Soporta configuración tanto vertical como en horizontal, y se personalizad en función del tipo de mapa.
+- Leyenda de mapa. Soporta configuración tanto vertical como en horizontal, y se personaliza en función del tipo de mapa.
 - Vista de mapa general (overview). Permite la congiuración de su tamaño.
 - Vista de mapa a pantalla completa (fullscreen).
 - Mapas con renderizado de imágenes.
