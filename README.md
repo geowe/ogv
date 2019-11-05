@@ -1,4 +1,6 @@
 # ogv
 Open Geodata Viewer
+Visor de mapas abierto. 
 
-![Screenshot](https://github.com/geowe/ogv/blob/master/src/ui/img/ogv-logo.png)
+[ogv](http://ogv.geowe.org/)
+![Screenshot](https://github.com/geowe/ogv/blob/master/screenshot.png)
