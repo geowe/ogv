@@ -3,12 +3,31 @@
   <img src="https://github.com/geowe/ogv/blob/master/screenshot.png">
 </p>
 
-**Open Geodata Viewer** es proyecto Open-Source desarrollado por la iniciativa GeoWE con el objetivo de ofrecer un visor de mapas libre y online. Para obtener más información, están disponibles los siguientes enlaces:
+**Open Geodata Viewer** es proyecto Open-Source basado en la librería OpenLayers, desarrollado por la iniciativa GeoWE con el objetivo de ofrecer un visor de mapas libre y online. Para obtener más información, están disponibles los siguientes enlaces:
 
 - [Web del proyecto](http://ogv.geowe.org/)
 - [Visor en vivo](https://geowe.org/ogv/viewer/?add-layer)
 - [Guía de uso](http://ogv.geowe.org/doc/)
 - [Utilidad para configurar tu propio visor](http://ogv.geowe.org/url-builder/)
+
+## Requerimientos
+Para comenzar a desarrollar sobre el proyecto, necesitará tener Node.js instalado en su entorno. Para **ogv** se han utilizado las siguientes versiones: 
+
+    $ node --version
+    v10.16.3
+
+    $ npm --version
+    6.9.0
+
+## Instalación
+Como punto de partida es necesario realizar un clonado del proyecto. Una vez disponible el código fuente en local, basta con ejecutar el siguiente comando:
+
+    npm install
+
+## Entorno de desarrollo
+Para realizar las pruebas pertinentes del software hay que arrancar el servidor de desarrollo de NodeJS, ejecutando la siguiente instrucción:
+
+    npm start
 
 ## Características principales
 
