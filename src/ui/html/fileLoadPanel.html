@@ -1,0 +1,22 @@
+<div class="w3-card-4 w3-display-middle w3-animate-top" style="position:fixed; top:190px; max-width:30em; font-family: Arial, Helvetica, sans-serif;font-size: .8rem;display:block">
+    <header class="w3-container w3-light-grey">
+        <h4> <i class="w3-left w3-circle w3-margin-right ms ms-layers-add"></i>Importar capa</h4>
+    </header>
+    <div class="w3-container w3-white">
+        <p class="w3-center">Permitidos ficheros <b>GeoJSON</b> en WGS84 [EPSG:4326]</p>
+        <hr>
+        <i class="w3-left w3-circle w3-margin-right ms ms-geojson w3-large"></i>
+        <div class="button-wrap">
+            <label class="w3-btn ogv-info-panel-button" for="upload">Seleccione</label>
+            <input id="upload" type="file" multiple accept=".json, .geojson ">
+            <input class="w3-btn ogv-info-panel-button " type="button" id="fileListButton" for="upload" value="Sin ficheros" disabled />
+            <hr>
+            <div id="infoFiles" style="top:0px"> </div>
+        </div>
+    </div>
+
+    <div class=" w3-center w3-white">
+        <button id="acceptButton" class="w3-btn w3-block w3-dark-grey " style="width:49%">Aceptar</button>
+        <button id="cancelButton" class="w3-btn w3-block w3-dark-grey " style="width:49% ">Cancelar</button>
+    </div>
+</div>

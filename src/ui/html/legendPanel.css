@@ -1,0 +1,37 @@
+.legendPanel {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .8rem;
+    font-weight: bold;
+    position: fixed;
+    left: 10px;
+    bottom: 50px;
+    z-index: 2;
+}
+
+.legendContent {
+    overflow-y: auto;
+}
+
+.verticalBox {
+    display: inline-block;
+    height: 13px;
+    width: 10px;
+    border: 0px solid;
+    vertical-align: middle;
+}
+
+.horizontalBox {
+    display: inline-block;
+    height: 13px;
+    width: 2px;
+    border: 0px solid;
+    vertical-align: middle;
+}
+
+
+/*.verticalBox {
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    border: 0px solid;
+}*/

@@ -1,0 +1,132 @@
+body {
+    position: fixed;
+    overflow: hidden;
+}
+
+#header {
+    position: fixed;
+    top: 0px;
+    /*top: -16px;*/
+    width: 100%;
+    z-index: 4;
+}
+
+#title {
+    text-align: center;
+    line-height: 150%;
+    font-size: 1.85em;
+}
+
+#map {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.ol-scale-line {
+    margin-bottom: 50px;
+    left: 82px;
+    /*border-color: rgb(255, 150, 0);*/
+    /* #3f51b5;*/
+    border-radius: 4px;
+    padding: 2px;
+}
+
+.ol-scale-line-inner {
+    border: 1px solid #eee;
+    border-top: none;
+    color: #eee;
+    font-size: 10px;
+    text-align: center;
+    margin: 1px;
+    will-change: contents, width;
+    /*background-color: rgb(255, 150, 0);
+        border-color: rgb(255, 150, 0);*/
+}
+
+.ol-attribution.ol-uncollapsible {
+    margin-bottom: 70px;
+    right: 18px;
+    padding: 2px;
+    border-radius: 4px 0 0;
+    height: 1.1em;
+    line-height: 1em;
+    max-width: calc(100% - 1.3em);
+}
+
+.ol-attribution.ol-uncollapsible img {}
+
+div.ol-custom-overviewmap,
+div.ol-custom-overviewmap.ol-uncollapsible {
+    bottom: auto;
+    left: auto;
+    right: 0;
+    top: 100px;
+}
+
+div.ol-custom-overviewmap:not(.ol-collapsed) {
+    border: 1px solid #3f51b5;
+}
+
+div.ol-custom-overviewmap div.ol-overviewmap-map {
+    border: none;
+    width: 20vh;
+    height: 20vh;
+}
+
+div.ol-custom-overviewmap div.ol-overviewmap-box {
+    border: 2px solid #3f51b5;
+}
+
+div.ol-custom-overviewmap:not(.ol-collapsed) button {
+    bottom: auto;
+    left: auto;
+    right: 1px;
+    top: 1px;
+}
+
+div.ol-rotate {
+    top: 170px;
+    right: 0;
+}
+
+.map:-webkit-full-screen {
+    height: 100%;
+    margin: 0;
+}
+
+.map:-ms-fullscreen {
+    height: 100%;
+}
+
+.map:fullscreen {
+    height: 100%;
+}
+
+.ogv-tool {
+    background-color: rgb(255, 150, 0) !important;
+}
+
+.ogv-info-panel-button {
+    background-color: rgb(244, 67, 54) !important;
+}
+
+.fullscreen:-webkit-full-screen {
+    height: 100%;
+    margin: 0;
+}
+
+.fullscreen:-ms-fullscreen {
+    height: 100%;
+}
+
+.fullscreen:fullscreen {
+    height: 100%;
+}
+
+.fullscreen {
+    margin-bottom: 10px;
+    width: 100%;
+    height: 400px;
+}

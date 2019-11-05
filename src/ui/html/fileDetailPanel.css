@@ -1,0 +1,36 @@
+.table-wrapper {
+    display: inline-block;
+    height: 150px;
+    overflow: auto;
+    width: 100%
+}
+
+table th {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th {
+    /*background-color: #3f51b5;*/
+    /*#1976D2;*/
+    color: #fff;
+}
+
+th,
+td {
+    padding: 1em .5em;
+}
+
+table tr {
+    color: #212121;
+}
+
+table tr:nth-child(odd) {
+    background-color: Lightgreen;
+    /*#BBDEFB;*/
+}

@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "checkJs": true,        
+        "baseUrl": "./",
+        "paths": {
+            "ol": ["node_modules/ol/src"],
+            "ol/*": ["node_modules/ol/src/*"]
+        }
+    },
+    "include": [
+        "**/*.js",
+        "node_modules/ol/**/*.js"
+    ]
+}

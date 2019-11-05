@@ -1,0 +1,58 @@
+{
+    "name": "ogv",
+    "version": "2.10.2",
+    "description": "Open Geodata Viewer",
+    "main": "main.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "parcel -p 9000 index.html --no-cache",
+        "build": "parcel build --public-url . index.html --no-cache",
+        "lint": "eslint src/**/*.js",
+        "lint:fix": "eslint src/**/*.js --fix",
+        "lint:report": "eslint src/**/*.js -f node_modules/eslint-html-reporter/reporter.js -o ./lint-report.html",
+        "lint:pretty": "eslint -f pretty src/**/*.js"
+    },
+    "keywords": [
+        "GIS",
+        "SIG",
+        "map",
+        "openlayers",
+        "geowe",
+        "visor",
+        "viewer",
+        "opendata",
+        "geodata"
+    ],
+    "author": {
+        "name": "José María",
+        "email": "jose@geowe.org"
+    },
+    "contributors": [{
+            "name": "Atanasio Muñoz",
+            "email": "ata@geowe.org"
+        },
+        {
+            "name": "Rafael López",
+            "email": "rafa@geowe.org"
+        }
+    ],
+    "license": "MIT",
+    "devDependencies": {
+        "eslint": "^6.5.1",
+        "eslint-config-standard": "^14.1.0",
+        "eslint-formatter-pretty": "^2.1.1",
+        "eslint-html-reporter": "^0.7.4",
+        "eslint-plugin-import": "^2.18.2",
+        "eslint-plugin-node": "^10.0.0",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-standard": "^4.0.1",
+        "parcel-bundler": "^1.12.3"
+    },
+    "dependencies": {
+        "@nieuwlandgeo/sldreader": "^0.1.0",
+        "mapskin": "^1.0.0",
+        "ol": "^6.1.0",
+        "src": "^1.1.2",
+        "w3css": "^2.7.0"
+    }
+}
