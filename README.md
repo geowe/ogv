@@ -3,7 +3,7 @@
   <img src="https://github.com/geowe/ogv/blob/master/screenshot.png">
 </p>
 
-**Open Geodata Viewer** es proyecto Open-Source basado en la librería OpenLayers, desarrollado por la iniciativa GeoWE con el objetivo de ofrecer un visor de mapas libre y online. Para obtener más información, están disponibles los siguientes enlaces:
+**Open Geodata Viewer** es proyecto Open-Source basado en la librería [OpenLayers](https://openlayers.org/), desarrollado por la iniciativa GeoWE con el objetivo de ofrecer un visor de mapas libre y online. Para obtener más información, están disponibles los siguientes enlaces:
 
 - [Web del proyecto](http://ogv.geowe.org/)
 - [Visor en vivo](https://geowe.org/ogv/viewer/?add-layer)
@@ -28,6 +28,11 @@ Como punto de partida es necesario realizar un clonado del proyecto. Una vez dis
 Para realizar las pruebas pertinentes del software hay que arrancar el servidor de desarrollo de NodeJS, ejecutando la siguiente instrucción:
 
     npm start
+
+## Puesta en producción
+Si se desea realizar el despliegue de una instancia propia de OGV, será necesario construir el software mediante el siguiente comando:
+
+    npm run build
 
 ## Características principales
 
