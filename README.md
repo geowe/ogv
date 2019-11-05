@@ -26,6 +26,11 @@
 - Mapas de calor (**heatmap**).
 - Mapas **temáticos/coropléticos**.
 - Leyenda de mapa, tanto vertical como horizontal, con personalización en función del tipo de mapa.
+- Información y herramientas adicionales del mapa a través de la leyenda.
 - Vista de mapa general (overview) con tamaño configurable.
 - Vista de mapa a pantalla completa (fullscreen).
 - Mapas con renderizado de imágenes.
+
+## Ejemplos de uso
+
+El repositorio de Open Data de GeoWE ofrece algunos mapas de muestra, generados mediante URL (usando el Widget de mapa para embeber en la web) a través de OGV. Para acceder a dicho repositorio, pulsa [aquí](http://repo.geowe.org/es).
