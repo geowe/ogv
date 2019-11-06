@@ -38,7 +38,7 @@ Con objeto de llevar a cabo un control de calidad del código del proyecto, así
 
     npm run lint:fix
     
-Durante este proceso de análisis, se corregirán los errores de formato encontrados. Por ejemplo, se colocarán los ";" necesarios al final de cada línea de código y además se unificarán las comillas simples. Para obtener un informe más detallado de los errores encontrados, se deberá ejecutar la siguiente línea:
+Para obtener un informe más detallado de los errores encontrados, se deberá ejecutar la siguiente línea:
 
     npm run lint:report
     
