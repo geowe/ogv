@@ -74,4 +74,4 @@ Como resultado se creará una carpeta con el nombre **dist** que contiene todos 
 
 ## Ejemplos de uso
 
-El repositorio de Open Data de GeoWE ofrece algunos mapas de muestra, generados mediante URL (usando el Widget de mapa para embeber en la web) a través de OGV. Para acceder a dicho repositorio, pulsa [aquí](http://repo.geowe.org/es).
+El **[repositorio de Open Data de GeoWE](http://repo.geowe.org/es)** ofrece algunos mapas de muestra, generados mediante URL (usando el Widget de mapa para embeber en la web) a través de OGV.
