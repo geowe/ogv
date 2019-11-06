@@ -6,7 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "parcel -p 9000 ./src/index.html --no-cache",
-        "build": "parcel build --public-url . /src/index.html --no-cache",
+        "build": "parcel build src/index.html --public-url ./ --no-cache",
         "lint": "eslint src/**/*.js",
         "lint:fix": "eslint src/**/*.js --fix",
         "lint:report": "eslint src/**/*.js -f node_modules/eslint-html-reporter/reporter.js -o ./lint-report.html",
@@ -23,12 +23,18 @@
         "opendata",
         "geodata"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/geowe/ogv.git"
+    },
+    "bugs": {
+        "url": "https://github.com/geowe/ogv/issues"
+    },
     "author": {
         "name": "José María",
         "email": "jose@geowe.org"
     },
-    "contributors": [
-        {
+    "contributors": [{
             "name": "Atanasio Muñoz",
             "email": "ata@geowe.org"
         },
@@ -53,7 +59,6 @@
         "@nieuwlandgeo/sldreader": "^0.1.0",
         "mapskin": "^1.0.0",
         "ol": "^6.1.1",
-        "src": "^1.1.2",
         "w3css": "^2.7.0"
     }
 }
