@@ -3,7 +3,7 @@
   <img src="https://github.com/geowe/ogv/blob/master/screenshot.png">
 </p>
 
-**Open Geodata Viewer** es proyecto Open-Source basado en la librería [OpenLayers](https://openlayers.org/), desarrollado por la iniciativa GeoWE con el objetivo de ofrecer un visor de mapas libre y online. Para obtener más información, están disponibles los siguientes enlaces:
+**Open Geodata Viewer** es un proyecto Open-Source basado en la librería **[OpenLayers](https://openlayers.org/)**, desarrollado por la iniciativa **[GeoWE](https://www.geowe.org/)** con el objetivo de ofrecer un visor de mapas libre y online. Para obtener más información, están disponibles los siguientes enlaces:
 
 - [Web del proyecto](http://ogv.geowe.org/)
 - [Visor en vivo](https://geowe.org/ogv/viewer/?add-layer)
@@ -20,19 +20,36 @@ Para comenzar a desarrollar sobre el proyecto, necesitará tener Node.js instala
     6.9.0
 
 ## Instalación
-Como punto de partida es necesario realizar un clonado del proyecto. Una vez disponible el código fuente en local, basta con ejecutar el siguiente comando:
+Como punto de partida es necesario realizar un clonado del proyecto. Una vez disponible el código fuente en local, habrá que instalar las dependencias requeridas del proyecto, para lo cual basta con ejecutar el siguiente comando:
 
     npm install
 
 ## Entorno de desarrollo
-Para realizar las pruebas pertinentes del software hay que arrancar el servidor de desarrollo de NodeJS, ejecutando la siguiente instrucción:
+Para realizar las pruebas pertinentes del software hay que arrancar el servidor de desarrollo de Node.js, ejecutando la siguiente instrucción:
 
     npm start
+
+Una vez iniciado el entorno de desarrollo, se podrá acceder al mismo mediante el navegador en la siguiente dirección:
+
+    http://127.0.0.1:9000
+    
+## Análisis estático de código
+Con objeto de llevar a cabo un control de calidad del código del proyecto, así como detectar posibles errores y vulnerabilidades, se ejecutará el siguiente comando:
+
+    npm run lint:fix
+    
+Para obtener un informe más detallado de los errores encontrados, se deberá ejecutar la siguiente línea:
+
+    npm run lint:report
+    
+Como resultado se generará un fichero llamado **lint-report.html** en la raíz del proyecto.
 
 ## Puesta en producción
 Si se desea realizar el despliegue de una instancia propia de OGV, será necesario construir el software mediante el siguiente comando:
 
     npm run build
+
+Como resultado se creará una carpeta con el nombre **dist** que contiene todos los ficheros necesarios para realizar la puesta en producción.
 
 ## Características principales
 
@@ -57,4 +74,4 @@ Si se desea realizar el despliegue de una instancia propia de OGV, será necesar
 
 ## Ejemplos de uso
 
-El repositorio de Open Data de GeoWE ofrece algunos mapas de muestra, generados mediante URL (usando el Widget de mapa para embeber en la web) a través de OGV. Para acceder a dicho repositorio, pulsa [aquí](http://repo.geowe.org/es).
+El **[repositorio de Open Data de GeoWE](http://repo.geowe.org/es)** ofrece algunos mapas de muestra, generados mediante URL (usando el Widget de mapa para embeber en la web) a través de OGV.
