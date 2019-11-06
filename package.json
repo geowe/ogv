@@ -23,6 +23,7 @@
         "opendata",
         "geodata"
     ],
+    "homepage": "https://github.com/geowe/ogv#readme"
     "repository": {
         "type": "git",
         "url": "https://github.com/geowe/ogv.git"
@@ -34,13 +35,18 @@
         "name": "José María",
         "email": "jose@geowe.org"
     },
-    "contributors": [{
+    "contributors": [
+        {
             "name": "Atanasio Muñoz",
             "email": "ata@geowe.org"
         },
         {
             "name": "Rafael López",
             "email": "rafa@geowe.org"
+        },
+        {
+            "name": "José María",
+            "email": "jose@geowe.org"
         }
     ],
     "license": "MIT",
