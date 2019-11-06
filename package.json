@@ -23,7 +23,7 @@
         "opendata",
         "geodata"
     ],
-    "homepage": "https://github.com/geowe/ogv#readme"
+    "homepage": "https://github.com/geowe/ogv#readme",
     "repository": {
         "type": "git",
         "url": "https://github.com/geowe/ogv.git"
