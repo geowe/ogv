@@ -28,12 +28,12 @@ export class SLDLayer extends BaseLayer {
             categories: this._style.getRule(),
             parent: this._map.getOverlayContainerStopEvent()
         }));
+
+        this._style.apply(this.getLayer());
     }
 
     getLayer() {
         this._layer = super.getLayer();
-        //this._style.setSLDFileUrl(this._sldFileUrl, this._sldLayerName, this._layer);
-
         return this._layer;
     }
 }

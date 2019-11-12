@@ -16,12 +16,12 @@ export class ThematicLayerLegend extends LayerLegend {
     }
 
     getMaxValue() {
-        const categorykeys = this._categories.orderedKeys; //Object.keys(this._categories);
+        const categorykeys = this._categories.orderedKeys;
         return categorykeys[categorykeys.length - 1];
     }
 
     getMinValue() {
-        const categorykeys = this._categories.orderedKeys; //Object.keys(this._categories);
+        const categorykeys = this._categories.orderedKeys;
         return categorykeys[0];
     }
 

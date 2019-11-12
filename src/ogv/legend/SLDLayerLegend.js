@@ -1,8 +1,4 @@
-import { COLOR_WIDTH_DEFAULT, PIXEL_WIDTH_VALUE, LEGEND_HEIGHT, LEGEND_INFO_ATTRIBUTE_NAME, LEGEND_INFO_MAX_VALUE, LEGEND_INFO_MIN_VALUE, HORIZONTAL_CSS_NAME, VERTICAL_CSS_NAME, LayerLegend } from './LayerLegend';
-import LayerTypeName from '../layer/LayerTypeName';
-
-const CATEGORY_COUNT_MESSAGE = 'Frecuencia de la categoria';
-const LEGEND_INFO_CATEGORIES_ATTRIBUTE_NAME = 'Categorias';
+import { COLOR_WIDTH_DEFAULT, PIXEL_WIDTH_VALUE, LEGEND_HEIGHT, VERTICAL_CSS_NAME, LayerLegend } from './LayerLegend';
 
 export class SLDLayerLegend extends LayerLegend {
     constructor(arg) {
@@ -11,37 +7,25 @@ export class SLDLayerLegend extends LayerLegend {
     }
 
     show(mapSetting, layerName) {
-        //this._itemCount = mapSetting.legend.itemCount;
         super.show(mapSetting, layerName);
     }
 
     prepareLegendInfo(mapSetting) {
         if (mapSetting.legend !== undefined) {
-            /* mapSetting.legend.legendInfo[LEGEND_INFO_ATTRIBUTE_NAME] = mapSetting.layerSetting[LayerTypeName.THEMATIC_LAYER].attribute;
-             mapSetting.legend.legendInfo[LEGEND_INFO_CATEGORIES_ATTRIBUTE_NAME] = Object.keys(this._categories).length;
-             mapSetting.legend.legendInfo[LEGEND_INFO_MIN_VALUE] = this.getMinValue();
-             mapSetting.legend.legendInfo[LEGEND_INFO_MAX_VALUE] = this.getMaxValue();*/
+
         }
     }
 
-    /*addHorizontalLegend(colorWidth) {
-        this.addValue(this.getMinValue());
-
-        this._categories.orderedKeys.forEach((categoryKey, index) => {
-            const item = this.getItemLegend(categoryKey, index, HORIZONTAL_CSS_NAME, colorWidth);
-            this._legendContent.appendChild(item.box);
-        });
-
-        this.addValue(this.getMaxValue());
-    }*/
+    addHorizontalLegend(colorWidth) {
+        this.addVerticalLegend(colorWidth);
+    }
 
     addVerticalLegend(colorWidth) {
-
-        var maxWidth = 0;
+        let maxWidth = 0;
         this._legendContent.style.height = LEGEND_HEIGHT;
+        let keys = Object.keys(this._categories);
 
-        alert(JSON.stringify(this._categories));
-        this._categories.forEach((categoryKey, index) => {
+        keys.forEach((categoryKey) => {
             var length = ("" + categoryKey).length;
             if (length > maxWidth) {
                 maxWidth = length;
@@ -49,7 +33,6 @@ export class SLDLayerLegend extends LayerLegend {
             var item = this.getItemLegend(categoryKey, this._categories[categoryKey], VERTICAL_CSS_NAME, colorWidth);
             item.boxContainer.appendChild(item.box);
             item.boxContainer.appendChild(item.label);
-            //if (this._itemCount !== null) { item.boxContainer.appendChild(this.getElementCount(categoryKey)); }
 
             this._legendContent.appendChild(item.boxContainer);
         });
@@ -57,26 +40,6 @@ export class SLDLayerLegend extends LayerLegend {
         colorWidth = colorWidth === null ? COLOR_WIDTH_DEFAULT : parseInt(colorWidth);
         var width = colorWidth + (maxWidth * PIXEL_WIDTH_VALUE);
         this.setLegendContentWidth(width);
-
-        /* var maxWidth = 0;
-         this._legendContent.style.height = LEGEND_HEIGHT;
-
-         this._categories.orderedKeys.forEach((categoryKey, index) => {
-             var length = ("" + categoryKey).length;
-             if (length > maxWidth) {
-                 maxWidth = length;
-             }
-             var item = this.getItemLegend(categoryKey, index, VERTICAL_CSS_NAME, colorWidth);
-             item.boxContainer.appendChild(item.box);
-             item.boxContainer.appendChild(item.label);
-             if (this._itemCount !== null) { item.boxContainer.appendChild(this.getElementCount(categoryKey)); }
-
-             this._legendContent.appendChild(item.boxContainer);
-         });
-
-         colorWidth = colorWidth === null ? COLOR_WIDTH_DEFAULT : parseInt(colorWidth);
-         var width = colorWidth + (maxWidth * PIXEL_WIDTH_VALUE);
-         this.setLegendContentWidth(width);*/
     }
 
     getItemLegend(itemName, color, className, colorWidth) {
@@ -96,11 +59,4 @@ export class SLDLayerLegend extends LayerLegend {
             box: box
         };
     }
-
-    /*getElementCount(categoryKey) {
-        const categoryTotalFeatureslabel = document.createElement('span');
-        categoryTotalFeatureslabel.innerHTML = ` <b style='font-size: .6rem;'>[${this._categories[categoryKey].count}]</b>`;
-        categoryTotalFeatureslabel.title = CATEGORY_COUNT_MESSAGE + ' ' + categoryKey;
-        return categoryTotalFeatureslabel;
-    }*/
 }
