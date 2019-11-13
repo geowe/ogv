@@ -44,6 +44,7 @@ export class FileLoader {
   }
 
   addToMap (fc, layerName) {
+    fc = this.removeEmptyFeatures(fc);
     this.zoomToExtent(fc);
     this.setMapZoom(this._mapSetting.zoom);
 
@@ -73,6 +74,17 @@ export class FileLoader {
 
     loadStrategy.load(baseLayer);
     baseLayer.prepareLegend(this._mapSetting);
+  }
+
+  removeEmptyFeatures (fc) {
+    const elements = [];
+    fc.forEach((feature) => {
+      if (feature.getGeometry() !== undefined && feature.getGeometry() !== null) {
+        elements.push(feature);
+      }
+    });
+
+    return elements;
   }
 
   calculateExtent (fc) {

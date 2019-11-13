@@ -1,6 +1,7 @@
 import Vector from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
+import LayerTypeName from './LayerTypeName';
 
 /**
  * @classdesc
@@ -11,7 +12,8 @@ export class BaseLayer {
   /**
      * @param {Array<Feature>} features
      */
-  constructor (features) {
+  constructor (features, layerTypeName) {
+    this._layerTypeName = layerTypeName;
     /**
          * @type {Array<Feature>}
          */
@@ -22,6 +24,10 @@ export class BaseLayer {
          * @type {import("ol/layer/Layer").default}
          */
     this._layer = undefined;
+  }
+
+  getLayerTypeName () {
+    return this._layerTypeName;
   }
 
   /**
@@ -102,19 +108,36 @@ export class BaseLayer {
   }
 
   getLayerLegend () {
-    this._layerLegend.prepareColor();
     return this._layerLegend;
   }
 
   prepareLegend (mapSetting) {
-    if (mapSetting.legend !== undefined) {
-      const layerName = this._layer.get('name').split('.')[0];
-      const layerLegend = this.getLayerLegend();
-      layerLegend.prepareLegendInfo(mapSetting);
-      mapSetting.legend.layerTotalFeatures = this.getFeatures().length;
-      mapSetting.legend.layers[layerName] = this._layer;
-      layerLegend.show(mapSetting, layerName);
+    if (mapSetting.legend === undefined) { return; }
+
+    const layerName = this._layer.get('name').split('.')[0];
+
+    if (this.getLayerTypeName() === LayerTypeName.SLD_LAYER) {
+      this.prepareSLDLegend(mapSetting, layerName);
+    } else {
+      this._layerLegend.prepareColor();
+      this.onLayerLegend(mapSetting, layerName);
     }
+  }
+
+  prepareSLDLegend (mapSetting, layerName) {
+    const onLayerLegend = setTimeout(() => {
+      if (this._layerLegend !== undefined) {
+        clearTimeout(onLayerLegend);
+        this.onLayerLegend(mapSetting, layerName);
+      }
+    }, 500);
+  }
+
+  onLayerLegend (mapSetting, layerName) {
+    this._layerLegend.prepareLegendInfo(mapSetting);
+    mapSetting.legend.layerTotalFeatures = this.getFeatures().length;
+    mapSetting.legend.layers[layerName] = this._layer;
+    this._layerLegend.show(mapSetting, layerName);
   }
 
   getLayer () {

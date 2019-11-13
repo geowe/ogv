@@ -12,7 +12,7 @@ export const TOTAL_COLOR_PALETTE = 5;
 
 export class HeatLayer extends BaseLayer {
   constructor () {
-    super([]);
+    super([], LayerTypeName.HEAT_LAYER);
     this._style = new LayerStyle();
   }
 

@@ -16,12 +16,12 @@ export class ThematicLayerLegend extends LayerLegend {
   }
 
   getMaxValue () {
-    const categorykeys = Object.keys(this._categories);
+    const categorykeys = this._categories.orderedKeys;
     return categorykeys[categorykeys.length - 1];
   }
 
   getMinValue () {
-    const categorykeys = Object.keys(this._categories);
+    const categorykeys = this._categories.orderedKeys;
     return categorykeys[0];
   }
 
@@ -35,25 +35,26 @@ export class ThematicLayerLegend extends LayerLegend {
   }
 
   addHorizontalLegend (colorWidth) {
-    const categorykeys = Object.keys(this._categories);
-    this.addValue(categorykeys[0]);
+    this.addValue(this.getMinValue());
 
-    categorykeys.forEach((categoryKey, index) => {
+    this._categories.orderedKeys.forEach((categoryKey, index) => {
       const item = this.getItemLegend(categoryKey, index, HORIZONTAL_CSS_NAME, colorWidth);
       this._legendContent.appendChild(item.box);
     });
 
-    this.addValue(categorykeys[categorykeys.length - 1]);
+    this.addValue(this.getMaxValue());
   }
 
   addVerticalLegend (colorWidth) {
     var maxWidth = 0;
-
-    const categorykeys = Object.keys(this._categories);
     this._legendContent.style.height = LEGEND_HEIGHT;
 
-    categorykeys.forEach((categoryKey, index) => {
-      if (categoryKey.length > maxWidth) { maxWidth = categoryKey.length; }
+    this._categories.orderedKeys.forEach((categoryKey, index) => {
+      var length = ('' + categoryKey).length;
+
+      if (length > maxWidth) {
+        maxWidth = length;
+      }
       var item = this.getItemLegend(categoryKey, index, VERTICAL_CSS_NAME, colorWidth);
       item.boxContainer.appendChild(item.box);
       item.boxContainer.appendChild(item.label);

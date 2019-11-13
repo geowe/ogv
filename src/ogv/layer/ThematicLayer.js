@@ -6,7 +6,7 @@ import { ThematicLayerLegend } from '../legend/ThematicLayerLegend';
 const FONT = 'bold 12px "Open Sans", "Arial Unicode MS", "sans-serif"';
 export class ThematicLayer extends BaseLayer {
   constructor () {
-    super([]);
+    super([], LayerTypeName.THEMATIC_LAYER);
     this._style = new LayerStyle();
   }
 
@@ -62,15 +62,14 @@ export class ThematicLayer extends BaseLayer {
 
       label = (label === undefined) ? '' : label;
       if (value !== null && !(value in rule)) {
-        // rule['' + value] = '' + label;
-        rule['' + value] = {
+        rule[value] = {
           label: '' + label,
           count: 1
         };
       } else if (value !== null && (value in rule)) {
-        let count = parseInt(rule['' + value].count);
+        let count = parseInt(rule[value].count);
         count = count + 1;
-        rule['' + value].count = count;
+        rule[value].count = count;
       }
     });
 
@@ -82,12 +81,16 @@ export class ThematicLayer extends BaseLayer {
       return !isNaN(e);
     });
 
-    if (isNumeric) { return keys.map(Number); } else { return keys; }
+    if (isNumeric) {
+      return keys.map(Number);
+    } else {
+      return keys;
+    }
   }
 
   getOrderlyRule (keys) {
     const orderlyRule = {};
-    keys.sort(function (a, b) {
+    const orderedKeys = keys.sort(function (a, b) {
       if (a > b) {
         return 1;
       }
@@ -96,21 +99,24 @@ export class ThematicLayer extends BaseLayer {
       }
 
       return 0;
-    }).forEach((key) => {
-      const ruleValue = this._rule['' + key];
+    });
+
+    orderedKeys.forEach((key) => {
+      const ruleValue = this._rule[key];
       if (ruleValue !== undefined) {
         const textLabel = ruleValue.label;
 
         orderlyRule['' + key] = {
-          label: ruleValue.label,
+          label: textLabel,
           count: ruleValue.count,
           style: this._style.getNextStyle()
         };
 
-        if (this._label !== undefined) { orderlyRule['' + key].style.getText().setText('' + textLabel); }
+        if (this._label !== undefined) { orderlyRule['' + key].style.getText().setText(textLabel); }
       }
     });
 
+    orderlyRule.orderedKeys = orderedKeys;
     return orderlyRule;
   }
 }

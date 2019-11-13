@@ -7,7 +7,7 @@ import LayerTypeName from './LayerTypeName';
 const DEFAULT_DISTANCE = 20;
 export class ClusterLayer extends BaseLayer {
   constructor (features) {
-    super(features);
+    super(features, LayerTypeName.CLUSTER_LAYER);
     this._style = new ClusterLayerStyle();
   }
 

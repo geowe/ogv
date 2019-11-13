@@ -1,10 +1,11 @@
 import { BaseLayer } from './BaseLayer';
 import simpleLayerLegend from '../legend/SimpleLayerLegend';
 import { IMAGE_FIELD_NAME, SimpleLayerStyle } from '../style/SimpleLayerStyle';
+import LayerTypeName from './LayerTypeName';
 
 export class SimpleLayer extends BaseLayer {
   constructor (features) {
-    super(features);
+    super(features, LayerTypeName.SIMPLE_LAYER);
     this._style = new SimpleLayerStyle();
     this.setLayerLegend(simpleLayerLegend);
   }

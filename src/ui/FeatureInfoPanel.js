@@ -71,7 +71,10 @@ export class FeatureInfoPanel extends VisualElement {
     }
 
     for (const propiedades in objeto) {
-      if (propiedades !== 'geometry' && propiedades !== IMAGE_FIELD_NAME) { this._content.innerHTML += `<label><b>${propiedades}</b></label> <br/>${objeto[propiedades]}<br /><hr>`; }
+      if (propiedades !== 'geometry' && propiedades !== IMAGE_FIELD_NAME) {
+        this._content.innerHTML += `<label><b>${propiedades}</b></label> <br/>${objeto[propiedades]}<br><div style="width: 100%;                
+                display: block;margin-top: 0.1em;margin-bottom: 0.1em;margin-left: auto;margin-right: auto;border-style: solid;border-width: 1px;border-color:#e8ebe9;">`;
+      }
     }
   }
 

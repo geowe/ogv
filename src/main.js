@@ -8,8 +8,8 @@ import { AddBasemapTool } from './ogv/tool/AddBasemapTool';
 import { OverviewTool } from './ogv/tool/OverviewTool';
 import { FullScreenTool } from './ogv/tool/FullScreenTool';
 
-let mapSetting = new MapSetting();
-let setting = mapSetting.getSetting();
+const mapSetting = new MapSetting();
+const setting = mapSetting.getSetting();
 new FullScreenTool(setting);
 new AddBasemapTool(setting);
 new OverviewTool(setting);
