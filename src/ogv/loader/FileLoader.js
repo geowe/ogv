@@ -7,118 +7,118 @@ import { IncrementalLoadStrategy } from './IncrementalLoadStrategy';
 import { AllLoadStrategy } from './AllLoadStrategy';
 
 export class FileLoader {
-    constructor(mapSetting) {
-        this._geojsonFormat = new GeoJSON();
-        this._totalFiles = 0;
-        this._totalFileLoaded = 0;
+  constructor (mapSetting) {
+    this._geojsonFormat = new GeoJSON();
+    this._totalFiles = 0;
+    this._totalFileLoaded = 0;
 
-        this._mapConfig = mapSetting;
-        this._mapSetting = mapSetting.getSetting();
+    this._mapConfig = mapSetting;
+    this._mapSetting = mapSetting.getSetting();
 
-        this._map = this._mapSetting.map;
-        this._loadMonitorPanel = this._mapSetting.monitorPanel;
+    this._map = this._mapSetting.map;
+    this._loadMonitorPanel = this._mapSetting.monitorPanel;
+  }
+
+  getFeatureCollection (geojson) {
+    var fc = this._geojsonFormat.readFeatures(geojson, { featureProjection: 'EPSG:3857' });
+    return fc;
+  }
+
+  beforeLoad () {
+    if (this._totalFiles > 0) {
+      this._loadMonitorPanel.show('Inicializando proceso de carga...');
+      this.loadProcessId = setInterval(() => {
+        if (this._totalFiles === this._totalFileLoaded) { this.finishLoad(); }
+      }, 1000);
+    }
+  }
+
+  load () {
+    this.beforeLoad();
+  }
+
+  finishLoad () {
+    clearInterval(this.loadProcessId);
+    this._loadMonitorPanel.hide();
+    this._map.updateSize();
+  }
+
+  addToMap (fc, layerName) {
+    fc = this.removeEmptyFeatures(fc);
+    this.zoomToExtent(fc);
+    this.setMapZoom(this._mapSetting.zoom);
+
+    const baseLayer = layerFactory.getLayer(this._mapConfig, fc);
+    let loadStrategy;
+    const zIndex = this.getCountVectorLayerLoaded() + 1;
+
+    this._loadingStrategy = this._mapSetting.loader;
+    if (this._loadingStrategy.isAllTypeLoad) {
+      loadStrategy = new AllLoadStrategy({
+        monitorPanel: this._loadMonitorPanel,
+        map: this._map,
+        layerName: layerName,
+        zIndex: zIndex,
+        onFinish: this.endLoadingFile.bind(this)
+      });
+    } else {
+      loadStrategy = new IncrementalLoadStrategy({
+        incrementalValue: this._loadingStrategy.incrementalCount,
+        monitorPanel: this._loadMonitorPanel,
+        map: this._map,
+        layerName: layerName,
+        zIndex: zIndex,
+        onFinish: this.endLoadingFile.bind(this)
+      });
     }
 
-    getFeatureCollection(geojson) {
-        var fc = this._geojsonFormat.readFeatures(geojson, { featureProjection: 'EPSG:3857' });
-        return fc;
-    }
+    loadStrategy.load(baseLayer);
+    baseLayer.prepareLegend(this._mapSetting);
+  }
 
-    beforeLoad() {
-        if (this._totalFiles > 0) {
-            this._loadMonitorPanel.show('Inicializando proceso de carga...');
-            this.loadProcessId = setInterval(() => {
-                if (this._totalFiles === this._totalFileLoaded) { this.finishLoad(); }
-            }, 1000);
-        }
-    }
+  removeEmptyFeatures (fc) {
+    const elements = [];
+    fc.forEach((feature) => {
+      if (feature.getGeometry() !== undefined && feature.getGeometry() !== null) {
+        elements.push(feature);
+      }
+    });
 
-    load() {
-        this.beforeLoad();
-    }
+    return elements;
+  }
 
-    finishLoad() {
-        clearInterval(this.loadProcessId);
-        this._loadMonitorPanel.hide();
-        this._map.updateSize();
-    }
+  calculateExtent (fc) {
+    this._extent = this._extent === undefined ? fc[0].getGeometry().getExtent() : this._extent;
 
-    addToMap(fc, layerName) {
-        fc = this.removeEmptyFeatures(fc);
-        this.zoomToExtent(fc);
-        this.setMapZoom(this._mapSetting.zoom);
+    for (var i = 0; i < fc.length; i++) { extend(this._extent, fc[i].getGeometry().getExtent()); }
+  }
 
-        const baseLayer = layerFactory.getLayer(this._mapConfig, fc);
-        let loadStrategy;
-        const zIndex = this.getCountVectorLayerLoaded() + 1;
+  zoomToExtent (fc) {
+    this.calculateExtent(fc);
+    this._map.getView().fit(this._extent, { size: this._map.getSize() });
+  }
 
-        this._loadingStrategy = this._mapSetting.loader;
-        if (this._loadingStrategy.isAllTypeLoad) {
-            loadStrategy = new AllLoadStrategy({
-                monitorPanel: this._loadMonitorPanel,
-                map: this._map,
-                layerName: layerName,
-                zIndex: zIndex,
-                onFinish: this.endLoadingFile.bind(this)
-            });
-        } else {
-            loadStrategy = new IncrementalLoadStrategy({
-                incrementalValue: this._loadingStrategy.incrementalCount,
-                monitorPanel: this._loadMonitorPanel,
-                map: this._map,
-                layerName: layerName,
-                zIndex: zIndex,
-                onFinish: this.endLoadingFile.bind(this)
-            });
-        }
+  setMapZoom (zoomSetting) {
+    if (zoomSetting.value !== null) { this._map.getView().setZoom(zoomSetting.value); }
+  }
 
-        loadStrategy.load(baseLayer);
-        baseLayer.prepareLegend(this._mapSetting);
-    }
+  configureColorPalette (colorPaletteSetting) {
+    if (colorPaletteSetting.color1 === null) { colorPaletteGenerator.setIncFactor(10); }
 
-    removeEmptyFeatures(fc) {
-        let elements = [];
-        fc.forEach((feature) => {
-            if (feature.getGeometry() !== undefined && feature.getGeometry() !== null) {
-                elements.push(feature);
-            }
-        })
+    colorPaletteGenerator.setAlpha(colorPaletteSetting.alpha);
+    colorPaletteGenerator.setColors(colorPaletteSetting.color1, colorPaletteSetting.color2, colorPaletteSetting.colorTotal + 1, colorPaletteSetting.keepIndex);
+  }
 
-        return elements;
-    }
+  getCountVectorLayerLoaded () {
+    let count = 0;
+    this._map.getLayers().forEach((layer) => {
+      if (layer instanceof Vector) { count++; }
+    });
 
-    calculateExtent(fc) {
-        this._extent = this._extent === undefined ? fc[0].getGeometry().getExtent() : this._extent;
+    return count;
+  }
 
-        for (var i = 0; i < fc.length; i++) { extend(this._extent, fc[i].getGeometry().getExtent()); }
-    }
-
-    zoomToExtent(fc) {
-        this.calculateExtent(fc);
-        this._map.getView().fit(this._extent, { size: this._map.getSize() });
-    }
-
-    setMapZoom(zoomSetting) {
-        if (zoomSetting.value !== null) { this._map.getView().setZoom(zoomSetting.value); }
-    }
-
-    configureColorPalette(colorPaletteSetting) {
-        if (colorPaletteSetting.color1 === null) { colorPaletteGenerator.setIncFactor(10); }
-
-        colorPaletteGenerator.setAlpha(colorPaletteSetting.alpha);
-        colorPaletteGenerator.setColors(colorPaletteSetting.color1, colorPaletteSetting.color2, colorPaletteSetting.colorTotal + 1, colorPaletteSetting.keepIndex);
-    }
-
-    getCountVectorLayerLoaded() {
-        let count = 0;
-        this._map.getLayers().forEach((layer) => {
-            if (layer instanceof Vector) { count++; }
-        });
-
-        return count;
-    }
-
-    endLoadingFile() {
-        this._totalFileLoaded++;
-    }
+  endLoadingFile () {
+    this._totalFileLoaded++;
+  }
 }

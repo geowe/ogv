@@ -1,62 +1,62 @@
 import { COLOR_WIDTH_DEFAULT, PIXEL_WIDTH_VALUE, LEGEND_HEIGHT, VERTICAL_CSS_NAME, LayerLegend } from './LayerLegend';
 
 export class SLDLayerLegend extends LayerLegend {
-    constructor(arg) {
-        super({ id: 'sldLayerLegend', parent: arg.parent });
-        this._categories = arg.categories;
+  constructor (arg) {
+    super({ id: 'sldLayerLegend', parent: arg.parent });
+    this._categories = arg.categories;
+  }
+
+  show (mapSetting, layerName) {
+    super.show(mapSetting, layerName);
+  }
+
+  prepareLegendInfo (mapSetting) {
+    if (mapSetting.legend !== undefined) {
+
     }
+  }
 
-    show(mapSetting, layerName) {
-        super.show(mapSetting, layerName);
-    }
+  addHorizontalLegend (colorWidth) {
+    this.addVerticalLegend(colorWidth);
+  }
 
-    prepareLegendInfo(mapSetting) {
-        if (mapSetting.legend !== undefined) {
+  addVerticalLegend (colorWidth) {
+    let maxWidth = 0;
+    this._legendContent.style.height = LEGEND_HEIGHT;
+    const keys = Object.keys(this._categories);
 
-        }
-    }
+    keys.forEach((categoryKey) => {
+      var length = ('' + categoryKey).length;
+      if (length > maxWidth) {
+        maxWidth = length;
+      }
+      var item = this.getItemLegend(categoryKey, this._categories[categoryKey], VERTICAL_CSS_NAME, colorWidth);
+      item.boxContainer.appendChild(item.box);
+      item.boxContainer.appendChild(item.label);
 
-    addHorizontalLegend(colorWidth) {
-        this.addVerticalLegend(colorWidth);
-    }
+      this._legendContent.appendChild(item.boxContainer);
+    });
 
-    addVerticalLegend(colorWidth) {
-        let maxWidth = 0;
-        this._legendContent.style.height = LEGEND_HEIGHT;
-        let keys = Object.keys(this._categories);
+    colorWidth = colorWidth === null ? COLOR_WIDTH_DEFAULT : parseInt(colorWidth);
+    var width = colorWidth + (maxWidth * PIXEL_WIDTH_VALUE);
+    this.setLegendContentWidth(width);
+  }
 
-        keys.forEach((categoryKey) => {
-            var length = ("" + categoryKey).length;
-            if (length > maxWidth) {
-                maxWidth = length;
-            }
-            var item = this.getItemLegend(categoryKey, this._categories[categoryKey], VERTICAL_CSS_NAME, colorWidth);
-            item.boxContainer.appendChild(item.box);
-            item.boxContainer.appendChild(item.label);
+  getItemLegend (itemName, color, className, colorWidth) {
+    var label = document.createElement('span');
+    label.innerHTML = ' ' + itemName;
 
-            this._legendContent.appendChild(item.boxContainer);
-        });
+    var box = document.createElement('div');
+    box.className = className;
+    box.style.backgroundColor = color;
+    box.title = itemName;
 
-        colorWidth = colorWidth === null ? COLOR_WIDTH_DEFAULT : parseInt(colorWidth);
-        var width = colorWidth + (maxWidth * PIXEL_WIDTH_VALUE);
-        this.setLegendContentWidth(width);
-    }
+    if (colorWidth !== undefined) { box.style.width = colorWidth + 'px'; }
 
-    getItemLegend(itemName, color, className, colorWidth) {
-        var label = document.createElement('span');
-        label.innerHTML = ' ' + itemName;
-
-        var box = document.createElement('div');
-        box.className = className;
-        box.style.backgroundColor = color;
-        box.title = itemName;
-
-        if (colorWidth !== undefined) { box.style.width = colorWidth + 'px'; }
-
-        return {
-            boxContainer: document.createElement('div'),
-            label: label,
-            box: box
-        };
-    }
+    return {
+      boxContainer: document.createElement('div'),
+      label: label,
+      box: box
+    };
+  }
 }
