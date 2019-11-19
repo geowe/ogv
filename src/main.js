@@ -18,4 +18,4 @@ new TitleMapTool(setting);
 new SelectTool(setting);
 new AddLayerTool(mapSetting);
 new UrlFileLoader(mapSetting).load();
-new HTMLWidget();
+//new HTMLWidget();
