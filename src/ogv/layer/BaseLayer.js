@@ -3,7 +3,6 @@ import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
 import LayerTypeName from './LayerTypeName';
 import VectorImageLayer from 'ol/layer/VectorImage';
-import { GeoJSON } from 'ol/src/format';
 
 /**
  * @classdesc
@@ -100,14 +99,12 @@ export class BaseLayer {
 
     prepareLayer(layerName) {
         /*this._layer = new Vector({
-          source: this.getVectorSource([])
+            source: this.getVectorSource([])
         });*/
 
         this._layer = new VectorImageLayer({
             imageRatio: 2,
-            source: new VectorSource({
-                format: new GeoJSON()
-            }),
+            source: new VectorSource({}),
         });
 
         this._layer.set('name', layerName);
