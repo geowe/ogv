@@ -1,7 +1,7 @@
-import Vector from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
 import LayerTypeName from './LayerTypeName';
+import VectorImageLayer from 'ol/layer/VectorImage';
 
 /**
  * @classdesc
@@ -97,9 +97,15 @@ export class BaseLayer {
   }
 
   prepareLayer (layerName) {
-    this._layer = new Vector({
-      source: this.getVectorSource([])
+    /* this._layer = new Vector({
+                source: this.getVectorSource([])
+            }); */
+
+    this._layer = new VectorImageLayer({
+      imageRatio: 2,
+      source: new VectorSource({})
     });
+
     this._layer.set('name', layerName);
   }
 

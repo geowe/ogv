@@ -11,6 +11,14 @@ body {
     z-index: 4;
 }
 
+#widgetHtmlButton:hover {
+    color: rgb(255, 150, 0) !important;
+}
+
+#widgetHtmlButton:active {
+    color: rgb(9, 121, 43);
+}
+
 #title {
     text-align: center;
     line-height: 150%;

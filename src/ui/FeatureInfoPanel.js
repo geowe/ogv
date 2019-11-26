@@ -18,7 +18,6 @@ export class FeatureInfoPanel extends VisualElement {
     const closeButton = document.getElementById('closeContentButton');
 
     closeButton.onclick = () => {
-      // document.getElementById('elementContent').style.display = 'none';
       this.hide();
     };
 

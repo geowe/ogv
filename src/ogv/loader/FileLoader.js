@@ -78,13 +78,21 @@ export class FileLoader {
 
   removeEmptyFeatures (fc) {
     const elements = [];
+    let removedFeatures = 0;
     fc.forEach((feature) => {
-      if (feature.getGeometry() !== undefined && feature.getGeometry() !== null) {
+      const geom = feature.getGeometry();
+      if (geom !== undefined && geom !== null && this.isEmptyGeometry(geom)) {
         elements.push(feature);
-      }
+      } else { removedFeatures++; }
     });
 
+    if (removedFeatures !== 0) { alert('Se han detectado ' + removedFeatures + ' elementos sin geometría.'); }
+
     return elements;
+  }
+
+  isEmptyGeometry (geometry) {
+    return geometry.getCoordinates().length !== 0;
   }
 
   calculateExtent (fc) {
