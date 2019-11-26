@@ -43,7 +43,12 @@ export class ThematicLayer extends BaseLayer {
       }
 
       const style = category.style;
-      if (style !== undefined) { style.getText().setFont(FONT); }
+      if (style !== undefined) {
+        if (this._label !== undefined) {
+          style.getText().setFont(FONT);
+          style.getText().setText('' + feature.get(this._label));
+        }
+      }
 
       return style;
     });
@@ -56,14 +61,9 @@ export class ThematicLayer extends BaseLayer {
 
     this._features.forEach((feature) => {
       const value = feature.get(this._attribute);
-      let label = '' + value;
 
-      if (this._label !== undefined) { label = feature.get(this._label); }
-
-      label = (label === undefined) ? '' : label;
       if (value !== null && !(value in rule)) {
         rule[value] = {
-          label: '' + label,
           count: 1
         };
       } else if (value !== null && (value in rule)) {
@@ -104,15 +104,10 @@ export class ThematicLayer extends BaseLayer {
     orderedKeys.forEach((key) => {
       const ruleValue = this._rule[key];
       if (ruleValue !== undefined) {
-        const textLabel = ruleValue.label;
-
         orderlyRule['' + key] = {
-          label: textLabel,
           count: ruleValue.count,
           style: this._style.getNextStyle()
         };
-
-        if (this._label !== undefined) { orderlyRule['' + key].style.getText().setText(textLabel); }
       }
     });
 

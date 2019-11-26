@@ -1,0 +1,9 @@
+#htmlWidgetpanel {
+    position: fixed;
+    z-index: 1;
+    top: 35px;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    overflow: auto;
+}

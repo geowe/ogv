@@ -8,7 +8,7 @@ const FLASH_ANIMATION_DURATION = 100;
 
 export class IncrementalLoadStrategy {
   constructor (args) {
-    this._incrementalValue = args.incrementalValue;
+    this._incrementalValue = parseInt(args.incrementalValue);
     this._monitorPanel = args.monitorPanel;
     this._map = args.map;
     this._layerName = args.layerName;
@@ -24,7 +24,7 @@ export class IncrementalLoadStrategy {
     const source = vectorLayer.getSource();
 
     source.on('addfeature', (e) => {
-      this.flash(e.feature, vectorLayer);
+      // this.flash(e.feature, vectorLayer);
     });
 
     let index = 0;
