@@ -14,6 +14,7 @@ export class ThematicLayer extends BaseLayer {
     this._map = layerSetting.map;
     this._attribute = layerSetting[LayerTypeName.THEMATIC_LAYER].attribute;
     this._label = layerSetting[LayerTypeName.THEMATIC_LAYER].label;
+    this._rate = layerSetting[LayerTypeName.THEMATIC_LAYER].rate;
   }
 
   setFeatures (features) {
@@ -48,6 +49,8 @@ export class ThematicLayer extends BaseLayer {
           style.getText().setFont(FONT);
           style.getText().setText('' + feature.get(this._label));
         }
+
+        if (this._rate !== undefined && this._rate !== '') { style.getImage().setRadius(7 + parseInt(feature.get(this._attribute)) / this._rate); }
       }
 
       return style;
