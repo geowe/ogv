@@ -8,6 +8,7 @@ const Parameter = Object.freeze({
   DISTANCE: 'distance',
   HEATMAP: 'heatmap',
   HEATMAP_RADIUS: 'radius',
+  THEMATIC_RATE: 'rate',
   HEATMAP_BLUR: 'blur',
   THEMATIC: 'thematic',
   THEMATIC_LABEL: 'label',

@@ -22,7 +22,7 @@ export class HeatLayer extends BaseLayer {
     this._attribute = heatLayerSetting.attribute;
     this._isDefaultColors = heatLayerSetting.isPaletteDefault;
     this._blur = heatLayerSetting.blur;
-    this._radius = heatLayerSetting.raius;
+    this._radius = heatLayerSetting.radius;
   }
 
   setFeatures (features) {

@@ -33,6 +33,11 @@ export class LayerSetting {
         const value = urlParser.get(Parameter.THEMATIC_LABEL);
         this._setting[LayerTypeName.THEMATIC_LAYER].label = (value === '') ? urlParser.get(Parameter.THEMATIC) : value;
       }
+
+      if (urlParser.has(Parameter.THEMATIC_RATE)) {
+        const value = urlParser.get(Parameter.THEMATIC_RATE);
+        this._setting[LayerTypeName.THEMATIC_LAYER].rate = value;
+      }
     }
   }
 
