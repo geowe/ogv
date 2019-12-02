@@ -6,6 +6,8 @@ import Circle from 'ol/style/Circle';
 
 import colorPaletteGenerator from './ColorPaletteGenerator';
 
+const DEFAULT_RADIUS = 7;
+
 export class LayerStyle {
   getNextStyle () {
     const color = colorPaletteGenerator.getNextColor();
@@ -32,7 +34,7 @@ export class LayerStyle {
         })
       }),
       image: new Circle({
-        radius: 7,
+        radius: (this._radius === undefined || this._radius === '') ? DEFAULT_RADIUS : this._radius,
         fill: new Fill({
           color: pointFillColor
         }),
@@ -64,5 +66,9 @@ export class LayerStyle {
 
   setTotalColorPalette (total) {
     colorPaletteGenerator.setColors(undefined, undefined, total);
+  }
+
+  setRadius (radius) {
+    this._radius = radius;
   }
 }
