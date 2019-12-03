@@ -152,13 +152,13 @@ export class BaseLayer {
     }
 
     /**
-     * Divide una cadena en varias
+     * Divide una cadena en varias líneas
      * http://stackoverflow.com/questions/14484787/wrap-text-in-javascript
      * @param {*} str cadena a dividir
      * @param {*} width ancho de carateres
      * @param {*} spaceReplacer cadena que reemplaza
      */
-    stringDivider(str, width, spaceReplacer) {
+    wrapText(str, width, spaceReplacer) {
         if (str.length > width) {
             var p = width;
             while (p > 0 && (str[p] != ' ' && str[p] != '-')) {
@@ -172,7 +172,7 @@ export class BaseLayer {
                     left = str.substring(0, p);
                 }
                 var right = str.substring(p + 1);
-                return left + spaceReplacer + this.stringDivider(right, width, spaceReplacer);
+                return left + spaceReplacer + this.wrapText(right, width, spaceReplacer);
             }
         }
         return str;

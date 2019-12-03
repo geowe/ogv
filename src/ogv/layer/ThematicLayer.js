@@ -45,7 +45,7 @@ export class ThematicLayer extends BaseLayer {
             const style = category.style;
             if (style !== undefined) {
                 if (this._label !== undefined) {
-                    style.getText().setText(this.stringDivider('' + feature.get(this._label), 16, '\n'));
+                    style.getText().setText(this.wrapText('' + feature.get(this._label), 16, '\n'));
                 }
 
                 if (this._rate !== undefined && this._rate !== '') { style.getImage().setRadius(7 + parseInt(feature.get(this._attribute)) / this._rate); }

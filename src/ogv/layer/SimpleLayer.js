@@ -20,7 +20,7 @@ export class SimpleLayer extends BaseLayer {
         if (this._label !== undefined) {
             var style = this._layer.getStyle();
             this._layer.setStyle((feature) => {
-                style.getText().setText(this.stringDivider('' + feature.get(this._label), 16, '\n'));
+                style.getText().setText(this.wrapText('' + feature.get(this._label), 16, '\n'));
                 return [style];
             });
         }
