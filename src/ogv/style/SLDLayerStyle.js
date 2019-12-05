@@ -18,12 +18,18 @@ export class SLDLayerStyle {
 
         this._rule = {};
         this._featureTypeStyle.rules.forEach((rule) => {
-          if (rule.polygonsymbolizer !== undefined) { this._rule[rule.name] = rule.polygonsymbolizer.fill.styling.fill; }
+          this.setPolygonSimbolizerFillRule(rule);
           if (rule.pointsymbolizer !== undefined) { this._rule[rule.name] = rule.pointsymbolizer.graphic.mark.fill.styling.fill; }
         });
 
         onFinishRule();
       });
+  }
+
+  setPolygonSimbolizerFillRule(rule) {
+    if (rule.polygonsymbolizer !== undefined && rule.polygonsymbolizer.fill !== undefined) {
+      this._rule[rule.name] = rule.polygonsymbolizer.fill.styling.fill;
+    }
   }
 
   getRule () {
