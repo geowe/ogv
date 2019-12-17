@@ -35,7 +35,8 @@ const Parameter = Object.freeze({
   LEGEND_LAYER_VISIBILITY: 'legend-layer-visibility',
   OVERVIEW: 'overview',
   OVERVIEW_HEIGHT: 'overview-height',
-  OVERVIEW_WIDTHT: 'overview-width'
+  OVERVIEW_WIDTHT: 'overview-width',
+  ATTRIBUTE_NO_NULL: 'attribute-no-null'
 });
 
 export default Parameter;

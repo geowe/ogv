@@ -30,6 +30,7 @@ export class SLDLayer extends BaseLayer {
     }));
 
     this._style.apply(this.getLayer());
+    this.onLayerLegend();
   }
 
   getLayer () {
