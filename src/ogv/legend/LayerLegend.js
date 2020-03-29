@@ -2,6 +2,8 @@ import colorPaletteGenerator from '../style/ColorPaletteGenerator';
 import { LegendPanel } from '../../ui/LegendPanel';
 import { LegendInfoPanel } from '../../ui/legendInfoPanel';
 import legendInfoButton from '../../ui/html/legendInfoButton.html';
+import urlParser from '../UrlParser';
+import Parameter from '../Parameter';
 
 export const LEGEND_INFO_ATTRIBUTE_NAME = 'Nombre de atributo';
 export const LEGEND_INFO_MAX_VALUE = 'Valor máximo';
@@ -93,6 +95,9 @@ export class LayerLegend {
   }
 
   getItemLegend (itemName, colorIndex, className, colorWidth) {
+    
+    colorWidth = this.getCalculatedColorWidth(colorWidth, itemName);
+    console.log('colorWidth: '+colorWidth);
     var label = document.createElement('span');
     label.innerHTML = ' ' + itemName;
 
@@ -108,6 +113,17 @@ export class LayerLegend {
       label: label,
       box: box
     };
+  }
+
+  getCalculatedColorWidth(colorWidth, itemName){        
+    if (urlParser.has(Parameter.LEGEND_COLORWIDTH_RATE)
+      && !isNaN(itemName)) {      
+      const rateValue = urlParser.get(Parameter.LEGEND_COLORWIDTH_RATE);       
+      colorWidth = parseInt(itemName)/rateValue;            
+    }else{
+      colorWidth = colorWidth === null ? COLOR_WIDTH_DEFAULT : parseInt(colorWidth);
+    }
+    return colorWidth;
   }
 
   calculateLegendMaxWidth (legendSetting) {
