@@ -1,6 +1,7 @@
 import { COLOR_WIDTH_DEFAULT, PIXEL_WIDTH_VALUE, LEGEND_HEIGHT, LEGEND_INFO_ATTRIBUTE_NAME, LEGEND_INFO_MAX_VALUE, LEGEND_INFO_MIN_VALUE, HORIZONTAL_CSS_NAME, VERTICAL_CSS_NAME, LayerLegend } from './LayerLegend';
 import LayerTypeName from '../layer/LayerTypeName';
 
+
 const CATEGORY_COUNT_MESSAGE = 'Frecuencia de la categoria';
 const LEGEND_INFO_CATEGORIES_ATTRIBUTE_NAME = 'Categorias';
 
@@ -37,13 +38,15 @@ export class ThematicLayerLegend extends LayerLegend {
   addHorizontalLegend (colorWidth) {
     this.addValue(this.getMinValue());
 
-    this._categories.orderedKeys.forEach((categoryKey, index) => {
+    this._categories.orderedKeys.forEach((categoryKey, index) => {      
       const item = this.getItemLegend(categoryKey, index, HORIZONTAL_CSS_NAME, colorWidth);
       this._legendContent.appendChild(item.box);
     });
 
     this.addValue(this.getMaxValue());
   }
+
+  
 
   addVerticalLegend (colorWidth) {
     var maxWidth = 0;
@@ -63,7 +66,9 @@ export class ThematicLayerLegend extends LayerLegend {
       this._legendContent.appendChild(item.boxContainer);
     });
 
+    
     colorWidth = colorWidth === null ? COLOR_WIDTH_DEFAULT : parseInt(colorWidth);
+
     var width = colorWidth + (maxWidth * PIXEL_WIDTH_VALUE);
     this.setLegendContentWidth(width);
   }
