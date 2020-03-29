@@ -32,6 +32,9 @@ export class MapSetting {
         hasTitle: urlParser.has(Parameter.TITLE),
         value: this.getTitleValue()
       },
+      info: {
+        allowNullAttribute: !urlParser.has(Parameter.ATTRIBUTE_NO_NULL)
+      },
       zoom: {
         value: urlParser.get(Parameter.ZOOM)
       },

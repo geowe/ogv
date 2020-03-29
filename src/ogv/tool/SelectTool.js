@@ -7,7 +7,8 @@ export class SelectTool {
     this._style = new SelectToolStyle();
 
     this._featureInfoPanel = new FeatureInfoPanel({
-      parent: setting.map.getOverlayContainerStopEvent()
+      parent: setting.map.getOverlayContainerStopEvent(),
+      allowNullAttribute: setting.info.allowNullAttribute
     });
 
     const featureSelect = new Select({

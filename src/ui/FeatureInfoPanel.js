@@ -11,6 +11,7 @@ export class FeatureInfoPanel extends VisualElement {
   constructor (arg) {
     super(arg.parent, html);
 
+    this._allowNullAttribute = arg.allowNullAttribute;
     this._content = document.getElementById('content');
     this._spatialContent = document.getElementById('spatialContent');
     this._wktButton = document.getElementById('wktButton');
@@ -71,8 +72,10 @@ export class FeatureInfoPanel extends VisualElement {
 
     for (const propiedades in objeto) {
       if (propiedades !== 'geometry' && propiedades !== IMAGE_FIELD_NAME) {
-        this._content.innerHTML += `<label><b>${propiedades}</b></label> <br/>${objeto[propiedades]}<br><div style="width: 100%;                
+        if (this._allowNullAttribute || !this._allowNullAttribute && (objeto[propiedades] !== undefined) && objeto[propiedades] !== null && objeto[propiedades] !== '') {
+          this._content.innerHTML += `<label><b>${propiedades}</b></label> <br/>${objeto[propiedades]}<br><div style="width: 100%;                
                 display: block;margin-top: 0.1em;margin-bottom: 0.1em;margin-left: auto;margin-right: auto;border-style: solid;border-width: 1px;border-color:#e8ebe9;">`;
+        }
       }
     }
   }

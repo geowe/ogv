@@ -26,7 +26,7 @@ export class SLDLayerStyle {
       });
   }
 
-  setPolygonSimbolizerFillRule(rule) {
+  setPolygonSimbolizerFillRule (rule) {
     if (rule.polygonsymbolizer !== undefined && rule.polygonsymbolizer.fill !== undefined) {
       this._rule[rule.name] = rule.polygonsymbolizer.fill.styling.fill;
     }
