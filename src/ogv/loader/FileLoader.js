@@ -129,4 +129,11 @@ export class FileLoader {
   endLoadingFile () {
     this._totalFileLoaded++;
   }
+
+  setMapTitle(title){
+    let mapTitle = this._mapSetting.title;    
+    let modifiedTitle = mapTitle.value.replace("json.title", title);
+    let mapTitleFromJson = document.getElementById('mapTitle');
+    mapTitleFromJson.innerHTML = modifiedTitle;
+  }
 }
