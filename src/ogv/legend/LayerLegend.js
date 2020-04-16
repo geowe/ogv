@@ -97,7 +97,7 @@ export class LayerLegend {
   getItemLegend (itemName, colorIndex, className, colorWidth) {
     
     colorWidth = this.getCalculatedColorWidth(colorWidth, itemName);
-    console.log('colorWidth: '+colorWidth);
+    
     var label = document.createElement('span');
     label.innerHTML = ' ' + itemName;
 

@@ -37,6 +37,10 @@ export class UrlFileLoader extends FileLoader {
         var fc = this.getFeatureCollection(json);
         this._loadMonitorPanel.show(`Cargando ${fc.length} elementos...`);
         this.addToMap(fc, layerName);
+        if(json.title){
+          this.setMapTitle(json.title);
+        }
+        
       }, 900);
     }).catch((error) => {
       this._totalFileLoaded++;
