@@ -37,7 +37,9 @@ const Parameter = Object.freeze({
   OVERVIEW_HEIGHT: 'overview-height',
   OVERVIEW_WIDTHT: 'overview-width',
   ATTRIBUTE_NO_NULL: 'attribute-no-null',
-  LEGEND_COLORWIDTH_RATE: 'legend-colorwidth-rate'
+  LEGEND_COLORWIDTH_RATE: 'legend-colorwidth-rate',
+  STROKE_COLOR: 'stroke-color',
+  STROKE_WIDTH: 'stroke-width'
 });
 
 export default Parameter;

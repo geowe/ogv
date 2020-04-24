@@ -98,8 +98,8 @@ export class BaseLayer {
 
   prepareLayer (layerName) {
     /* this._layer = new Vector({
-                        source: this.getVectorSource([])
-                    }); */
+                            source: this.getVectorSource([])
+                        }); */
 
     this._layer = new VectorImageLayer({
       imageRatio: 2,
@@ -165,5 +165,13 @@ export class BaseLayer {
       }
     }
     return str;
+  }
+
+  getFontSize (map, resolution) {
+    var zoom = map.getView().getZoom();
+    var dsize = (80 / resolution) * zoom;
+    var size = Math.round(dsize);
+    if (size > 12) size = 12;
+    return size;
   }
 }

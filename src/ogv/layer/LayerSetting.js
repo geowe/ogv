@@ -53,6 +53,14 @@ export class LayerSetting {
       if (urlParser.has(Parameter.THEMATIC_LABEL)) {
         this._setting.geojson.label = urlParser.get(Parameter.THEMATIC_LABEL);
       }
+
+      if (urlParser.has(Parameter.STROKE_COLOR)) {
+        this._setting.geojson.strokeColor = urlParser.get(Parameter.STROKE_COLOR);
+      }
+
+      if (urlParser.has(Parameter.STROKE_WIDTH)) {
+        this._setting.geojson.strokeWidth = urlParser.get(Parameter.STROKE_WIDTH);
+      }
     }
   }
 

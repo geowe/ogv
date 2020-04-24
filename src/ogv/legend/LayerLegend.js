@@ -95,9 +95,8 @@ export class LayerLegend {
   }
 
   getItemLegend (itemName, colorIndex, className, colorWidth) {
-    
     colorWidth = this.getCalculatedColorWidth(colorWidth, itemName);
-    
+
     var label = document.createElement('span');
     label.innerHTML = ' ' + itemName;
 
@@ -115,12 +114,12 @@ export class LayerLegend {
     };
   }
 
-  getCalculatedColorWidth(colorWidth, itemName){        
-    if (urlParser.has(Parameter.LEGEND_COLORWIDTH_RATE)
-      && !isNaN(itemName)) {      
-      const rateValue = urlParser.get(Parameter.LEGEND_COLORWIDTH_RATE);       
-      colorWidth = parseInt(itemName)/rateValue;            
-    }else{
+  getCalculatedColorWidth (colorWidth, itemName) {
+    if (urlParser.has(Parameter.LEGEND_COLORWIDTH_RATE) &&
+      !isNaN(itemName)) {
+      const rateValue = urlParser.get(Parameter.LEGEND_COLORWIDTH_RATE);
+      colorWidth = parseInt(itemName) / rateValue;
+    } else {
       colorWidth = colorWidth === null ? COLOR_WIDTH_DEFAULT : parseInt(colorWidth);
     }
     return colorWidth;
