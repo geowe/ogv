@@ -4,48 +4,58 @@ import { IMAGE_FIELD_NAME, SimpleLayerStyle } from '../style/SimpleLayerStyle';
 import LayerTypeName from './LayerTypeName';
 
 export class SimpleLayer extends BaseLayer {
-  constructor (features) {
-    super(features, LayerTypeName.SIMPLE_LAYER);
-    this._style = new SimpleLayerStyle();
-    this.setLayerLegend(simpleLayerLegend);
-  }
-
-  setSetting (layerSetting) {
-    this._layerSetting = layerSetting;
-    const labelValue = layerSetting.geojson.label;
-    if (labelValue !== undefined && labelValue !== '') { this._label = labelValue; }
-  }
-
-  checkLabelingStyle () {
-    if (this._label !== undefined) {
-      var style = this._layer.getStyle();
-      this._layer.setStyle((feature) => {
-        style.getText().setText(this.wrapText('' + feature.get(this._label), 16, '\n'));
-        return [style];
-      });
+    constructor(features) {
+        super(features, LayerTypeName.SIMPLE_LAYER);
+        this._style = new SimpleLayerStyle();
+        this.setLayerLegend(simpleLayerLegend);
     }
-  }
 
-  getLayer () {
-    if (this.isImageLayer()) {
-      this._style.setSelectTool(this._layerSetting.featureSelect);
-      this._layer.setStyle(this._style.getFeatureStyle.bind(this._style));
-    } else {
-      this._layer.setStyle(this._style.getNextStyle());
-      this.checkLabelingStyle();
+    setSetting(layerSetting) {
+        this._layerSetting = layerSetting;
+        const labelValue = layerSetting.geojson.label;
+        this._strokeColorValue = layerSetting.geojson.strokeColor;
+        this._strokeWidthValue = layerSetting.geojson.strokeWidth;
+
+        if (labelValue !== undefined && labelValue !== '') { this._label = labelValue; }
     }
-    return this._layer;
-  }
 
-  isImageLayer () {
-    let enc = false;
+    checkStyle() {
+        var style = this._layer.getStyle();
+        this._layer.setStyle((feature, resolution) => {
+            if (this._label !== undefined) {
+                let size = this.getFontSize(this._layerSetting.map, resolution);
+                style.getText().setFont(size + 'px Calibri,sans-serif');
+                style.getText().setText(this.wrapText('' + feature.get(this._label), 16, '\n'));
+            }
+            if (this._strokeColorValue !== undefined)
+                style.getStroke().setColor("#" + this._strokeColorValue);
+            if (this._strokeWidthValue !== undefined)
+                style.getStroke().setWidth(this._strokeWidthValue);
 
-    this._features.forEach((feature) => {
-      if (feature.get(IMAGE_FIELD_NAME) !== undefined) {
-        enc = true;
-      }
-    });
+            return [style];
+        });
+    }
 
-    return enc;
-  }
+    getLayer() {
+        if (this.isImageLayer()) {
+            this._style.setSelectTool(this._layerSetting.featureSelect);
+            this._layer.setStyle(this._style.getFeatureStyle.bind(this._style));
+        } else {
+            this._layer.setStyle(this._style.getNextStyle());
+            this.checkStyle();
+        }
+        return this._layer;
+    }
+
+    isImageLayer() {
+        let enc = false;
+
+        this._features.forEach((feature) => {
+            if (feature.get(IMAGE_FIELD_NAME) !== undefined) {
+                enc = true;
+            }
+        });
+
+        return enc;
+    }
 }
