@@ -47,14 +47,13 @@ export class ThematicLayer extends BaseLayer {
       const style = category.style;
       if (style !== undefined) {
         if (this._label !== undefined) {
-          const size = this.getFontSize(this._map, resolution);
-          style.getText().setFont(size + 'px Calibri,sans-serif');
+          // const size = this.getFontSize(this._map, resolution);
+          // style.getText().setFont(size + 'px Calibri,sans-serif');
           style.getText().setText(this.wrapText('' + feature.get(this._label), 16, '\n'));
         }
 
         if (this._strokeColorValue !== undefined) { style.getStroke().setColor('#' + this._strokeColorValue); }
         if (this._strokeWidthValue !== undefined) { style.getStroke().setWidth(this._strokeWidthValue); }
-
         if (this._rate !== undefined && this._rate !== '') { style.getImage().setRadius(7 + parseInt(feature.get(this._attribute)) / this._rate); }
       }
 

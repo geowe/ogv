@@ -98,12 +98,13 @@ export class BaseLayer {
 
   prepareLayer (layerName) {
     /* this._layer = new Vector({
-                            source: this.getVectorSource([])
-                        }); */
+                                source: this.getVectorSource([])
+                            }); */
 
     this._layer = new VectorImageLayer({
       imageRatio: 2,
-      source: new VectorSource({})
+      source: new VectorSource({}),
+      declutter: true
     });
 
     this._layer.set('name', layerName);
