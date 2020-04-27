@@ -65,12 +65,16 @@ export class LayerStyle {
 
   createTextStyle () {
     return new Text({
+      font: '12px Arial',
       overflow: true,
-      textBaseline: 'bottom',
-      font: 'Arial',
       scale: 1.5,
-      fill: new Fill({ color: '#000' }),
-      stroke: new Stroke({ color: '#fff', width: 3 })
+      fill: new Fill({
+        color: '#000'
+      }),
+      stroke: new Stroke({
+        color: '#fff',
+        width: 3
+      })
     });
   }
 }
