@@ -8,6 +8,14 @@ export class SimpleLayer extends BaseLayer {
     super(features, LayerTypeName.SIMPLE_LAYER);
     this._style = new SimpleLayerStyle();
     this.setLayerLegend(simpleLayerLegend);
+    this._declutter = true;
+  }
+
+  setFeatures (features) {
+    super.setFeatures(features);
+    if (features[0].getGeometry().getType() === 'Point') {
+      this._declutter = false;
+    }
   }
 
   setSetting (layerSetting) {
@@ -56,5 +64,9 @@ export class SimpleLayer extends BaseLayer {
     });
 
     return enc;
+  }
+
+  prepareLayer (layerName) {
+    super.prepareLayer(layerName, this._declutter);
   }
 }
