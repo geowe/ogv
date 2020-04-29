@@ -7,6 +7,7 @@ export class ThematicLayer extends BaseLayer {
   constructor () {
     super([], LayerTypeName.THEMATIC_LAYER);
     this._style = new LayerStyle();
+    this._declutter = true;
   }
 
   setSetting (layerSetting) {
@@ -20,6 +21,9 @@ export class ThematicLayer extends BaseLayer {
 
   setFeatures (features) {
     super.setFeatures(features);
+    if (features[0].getGeometry().getType() === 'Point') {
+      this._declutter = false;
+    }
     this.createCategories();
     this.setLayerLegend(new ThematicLayerLegend({
       categories: this._rule,
@@ -37,6 +41,13 @@ export class ThematicLayer extends BaseLayer {
 
   getLayer () {
     super.getLayer();
+
+    // alert(this._layer.get("declutter"))
+    // this._layer.set("declutter", this._declutter);
+    // alert(this._layer.get("declutter"))
+
+    // this._layer.unset("declutter", false);
+
     this._layer.setStyle((feature, resolution) => {
       const category = this._rule[feature.get(this._attribute)];
 
@@ -120,5 +131,9 @@ export class ThematicLayer extends BaseLayer {
 
     orderlyRule.orderedKeys = orderedKeys;
     return orderlyRule;
+  }
+
+  prepareLayer (layerName) {
+    super.prepareLayer(layerName, this._declutter);
   }
 }
