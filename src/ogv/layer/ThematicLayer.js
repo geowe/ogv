@@ -7,6 +7,7 @@ export class ThematicLayer extends BaseLayer {
   constructor () {
     super([], LayerTypeName.THEMATIC_LAYER);
     this._style = new LayerStyle();
+    this._declutter = true;
   }
 
   setSetting (layerSetting) {
@@ -14,10 +15,15 @@ export class ThematicLayer extends BaseLayer {
     this._attribute = layerSetting[LayerTypeName.THEMATIC_LAYER].attribute;
     this._label = layerSetting[LayerTypeName.THEMATIC_LAYER].label;
     this._rate = layerSetting[LayerTypeName.THEMATIC_LAYER].rate;
+    this._strokeColorValue = layerSetting.geojson.strokeColor;
+    this._strokeWidthValue = layerSetting.geojson.strokeWidth;
   }
 
   setFeatures (features) {
     super.setFeatures(features);
+    if (features[0].getGeometry().getType() === 'Point') {
+      this._declutter = false;
+    }
     this.createCategories();
     this.setLayerLegend(new ThematicLayerLegend({
       categories: this._rule,
@@ -35,7 +41,14 @@ export class ThematicLayer extends BaseLayer {
 
   getLayer () {
     super.getLayer();
-    this._layer.setStyle((feature) => {
+
+    // alert(this._layer.get("declutter"))
+    // this._layer.set("declutter", this._declutter);
+    // alert(this._layer.get("declutter"))
+
+    // this._layer.unset("declutter", false);
+
+    this._layer.setStyle((feature, resolution) => {
       const category = this._rule[feature.get(this._attribute)];
 
       if (category === undefined) {
@@ -45,9 +58,13 @@ export class ThematicLayer extends BaseLayer {
       const style = category.style;
       if (style !== undefined) {
         if (this._label !== undefined) {
+          // const size = this.getFontSize(this._map, resolution);
+          // style.getText().setFont(size + 'px Calibri,sans-serif');
           style.getText().setText(this.wrapText('' + feature.get(this._label), 16, '\n'));
         }
 
+        if (this._strokeColorValue !== undefined) { style.getStroke().setColor('#' + this._strokeColorValue); }
+        if (this._strokeWidthValue !== undefined) { style.getStroke().setWidth(this._strokeWidthValue); }
         if (this._rate !== undefined && this._rate !== '') { style.getImage().setRadius(7 + parseInt(feature.get(this._attribute)) / this._rate); }
       }
 
@@ -114,5 +131,9 @@ export class ThematicLayer extends BaseLayer {
 
     orderlyRule.orderedKeys = orderedKeys;
     return orderlyRule;
+  }
+
+  prepareLayer (layerName) {
+    super.prepareLayer(layerName, this._declutter);
   }
 }

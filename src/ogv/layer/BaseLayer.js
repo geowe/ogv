@@ -96,14 +96,15 @@ export class BaseLayer {
     return this.getLayer();
   }
 
-  prepareLayer (layerName) {
+  prepareLayer (layerName, declutter = true) {
     /* this._layer = new Vector({
-                        source: this.getVectorSource([])
-                    }); */
+                                    source: this.getVectorSource([])
+                                }); */
 
     this._layer = new VectorImageLayer({
       imageRatio: 2,
-      source: new VectorSource({})
+      source: new VectorSource({}),
+      declutter: declutter
     });
 
     this._layer.set('name', layerName);
@@ -165,5 +166,13 @@ export class BaseLayer {
       }
     }
     return str;
+  }
+
+  getFontSize (map, resolution) {
+    var zoom = map.getView().getZoom();
+    var dsize = (80 / resolution) * zoom;
+    var size = Math.round(dsize);
+    if (size > 12) size = 12;
+    return size;
   }
 }
