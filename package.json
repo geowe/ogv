@@ -66,8 +66,12 @@
     },
     "dependencies": {
         "@nieuwlandgeo/sldreader": "^0.1.0",
+        "html2canvas": "^1.0.0-rc.7",
         "mapskin": "^1.0.0",
         "ol": "^6.4.3",
         "w3css": "^2.7.0"
-    }
+    },
+    "browserslist": [
+        "last 1 Chrome versions"
+    ]
 }

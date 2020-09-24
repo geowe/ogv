@@ -7,6 +7,7 @@ import { TitleMapTool } from './ogv/tool/TitleMapTool';
 import { AddBasemapTool } from './ogv/tool/AddBasemapTool';
 import { OverviewTool } from './ogv/tool/OverviewTool';
 import { FullScreenTool } from './ogv/tool/FullScreenTool';
+import { MapScreenshotTool } from './ogv/tool/MapScreenshotTool';
 import { HTMLWidget } from './ui/HTMLWidget';
 
 const mapSetting = new MapSetting();
@@ -17,5 +18,6 @@ new OverviewTool(setting);
 new TitleMapTool(setting);
 new SelectTool(setting);
 new AddLayerTool(mapSetting);
+new MapScreenshotTool(mapSetting);
 new UrlFileLoader(mapSetting).load();
 // new HTMLWidget();

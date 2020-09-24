@@ -48,7 +48,9 @@ export class MapSetting {
                 alpha: urlParser.get(Parameter.ALPHA),
             },
             addLayer: urlParser.has(Parameter.ADD_LAYER),
-            mapScreenshot: urlParser.has(Parameter.MAP_SCREENSHOT),
+            mapScreenshot: {
+                isScreenshot: urlParser.has(Parameter.MAP_SCREENSHOT),
+            },
         };
 
         this._setting.layerSetting = this._layerSetting.getSetting();
