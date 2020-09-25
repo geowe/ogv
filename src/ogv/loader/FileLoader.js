@@ -43,10 +43,10 @@ export class FileLoader {
         clearInterval(this.loadProcessId);
         this._loadMonitorPanel.hide();
         this._map.updateSize();
-        const screenshotConfig = this._mapSetting.mapScreenshot;
-        if (screenshotConfig.isScreenshot) {
-            screenshotConfig.tool.getScreenshot();
-        }
+        // const screenshotConfig = this._mapSetting.mapScreenshot;
+        // if (screenshotConfig.isScreenshot) {
+        //     screenshotConfig.tool.getScreenshot();
+        // }
     }
 
     addToMap(fc, layerName) {

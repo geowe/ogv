@@ -1,3 +1,5 @@
+import TileLayer from 'ol/layer/Tile';
+import proxyTileLoader from '../catalog/ProxyTileLoader';
 const html2canvas = require('html2canvas');
 
 export class MapScreenshotTool {
@@ -7,6 +9,19 @@ export class MapScreenshotTool {
     }
 
     async getScreenshot() {
+        const map = this._setting.map;
+        const raster = this._setting.raster;
+        const rasterProxy = this._setting.rasterProxy;
+
+        // for (const layer of map.getLayers().getArray()) {
+        //     if (layer instanceof TileLayer) {
+        //         layer.getSource().setTileLoadFunction(proxyTileLoader.load.bind(proxyTileLoader));
+        //     }
+        // }
+
+        this.clearTileLayers(map);
+        map.addLayer(rasterProxy);
+
         HTMLCanvasElement.prototype.getContext = (function(origFn) {
             return function(type, attributes) {
                 if (['experimental-webgl', 'webgl', 'webkit-3d', 'moz-webgl'].includes(type)) {
@@ -20,7 +35,6 @@ export class MapScreenshotTool {
 
         const heatMapCanvas = document.getElementsByTagName('canvas')[1];
 
-        const map = this._setting.map;
         const promise = new Promise((resolve, reject) => {
             map.once('rendercomplete', () => {
                 var mapCanvas = document.createElement('canvas');
@@ -50,19 +64,26 @@ export class MapScreenshotTool {
                             mapContext.drawImage(canvas, 0, 0);
                             if (heatMapCanvas) mapContext.drawImage(heatMapCanvas, 0, 0);
 
-                            var img = document.getElementById('simpleLayerLegend');
+                            // var legend = document.getElementById('simpleLayerLegend');
 
-                            // mapContext.drawImage(img.getContext('2d'), 0, 0);
-                            // 'simpleLayerLegendlegendContent'
-                            html2canvas(img).then((canvas) => {
-                                mapContext.drawImage(canvas, 100, 200);
-                                this.download(mapCanvas);
-                                resolve({});
-                            });
+                            // // 'simpleLayerLegendlegendContent'
+                            // html2canvas(legend).then((canvas) => {
+                            //     var rect = legend.getBoundingClientRect();
+
+                            //     mapContext.drawImage(canvas, rect.left, rect.top);
+                            //     this.download(mapCanvas);
+                            //     resolve({});
+                            // });
                         }
                     }
                 );
-                // this.download();
+
+                this.download(mapCanvas);
+                this.clearTileLayers(map);
+                map.addLayer(raster);
+                resolve({});
+
+                // this.download(mapCanvas);
                 // resolve({});
             });
             // map.renderSync();
@@ -77,9 +98,18 @@ export class MapScreenshotTool {
         element.setAttribute('href', mapCanvas.toDataURL('PNG'));
         // element.setAttribute('href', heatMapCanvas.toDataURL('PNG'));
         element.setAttribute('download', 'map.png');
+        element.setAttribute('author', 'OGV GeoWE');
         element.style.display = 'none';
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
+    }
+
+    clearTileLayers(map) {
+        for (const layer of map.getLayers().getArray()) {
+            if (layer instanceof TileLayer) {
+                map.removeLayer(layer);
+            }
+        }
     }
 }

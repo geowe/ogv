@@ -4,16 +4,35 @@
         <img id="ogvLogo" src="" class="w3-margin-left" style="height: 36px" />
         <label id="title"> OGV </label>
         <label id="subTitle" class="w3-tiny w3-hide-small"> Open GeoData Viewer 2.15.3</label>
-        <!-- <a href="https://www.geowe.org" target="_blank"><img id="logo" class="w3-circle w3-right w3-margin-right" style="height: 50px" /></a> -->
+        <div class="w3-right w3-margin-right w3-padding-small w3-dropdown-click w3-text-white">
+            <a id="menuButton" class="w3-bar-item w3-button"><i class="fas fa-2x fa-ellipsis-v"></i
+            ></a>
 
-        <!--<label class="w3-bar-block w3-xxlarge">
+            <!-- <div id="menuOptionsButton" class="w3-dropdown-content w3-bar-block w3-border" style="right: 0"></div> -->
+            <div id="menuOptionsButton" class="w3-dropdown-content w3-bar-block w3-card-4" style="right: 0; background-color: rgb(51, 51, 204, 0.5)">
+                <a href="#" id="pngDownloadButton" class="w3-bar-item w3-button w3-hover-indigo w3-text-white"><i class="fas fa-download"></i> Mapa PNG</a
+                >
+                <a id="jpgDownload" class="w3-bar-item w3-button w3-hover-indigo w3-text-white"
+                    ><i class="fas fa-download"></i> Mapa JPG</a
+                >
+                <a id="pdfDownload" class="w3-bar-item w3-button w3-hover-indigo w3-text-white"
+                    ><i class="fas fa-download"></i> Mapa PDF</a
+                >
+            </div>
+        </div>
+
+        <!-- <a href="#" class="w3-bar-item w3-button w3-right w3-margin-right w3-padding-small"><i class="fas fa-2x fa-ellipsis-v"></i></a> -->
+
+                <!-- <a href="https://www.geowe.org" target="_blank"><img id="logo" class="w3-circle w3-right w3-margin-right" style="height: 50px" /></a> -->
+
+                <!--<label class="w3-bar-block w3-xxlarge">
             <a id="widgetHtmlButton" href="#" class="w3-bar-item w3-button w3-right w3-margin-right"><i class="ms ms-ogc-gml"></i></a>            
         </label>-->
-    </div>
-</div>
+            </div>
+        </div>
 
-<div style="margin-left: 0px; margin-top: 45px">
-    <div id="fullscreen" class="fullscreen">
-        <div id="map" class="map"></div>
-    </div>
-</div>
+        <div style="margin-left: 0px; margin-top: 45px">
+            <div id="fullscreen" class="fullscreen">
+                <div id="map" class="map"></div>
+            </div>
+        </div>
