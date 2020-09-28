@@ -49,7 +49,7 @@ export class MapSetting {
             },
             addLayer: urlParser.has(Parameter.ADD_LAYER),
             mapScreenshot: {
-                isScreenshot: urlParser.has(Parameter.MAP_SCREENSHOT),
+                tool: {},
             },
         };
 

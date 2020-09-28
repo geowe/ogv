@@ -22,23 +22,23 @@ class BasemapCatalog {
                 'https://{a-c}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png'
             );
         };
-        this.catalog[CatalogLayerName.CATASTRO] = () => {
-            return this.getCatastro();
+        this.catalog[CatalogLayerName.CATASTRO] = (proxy) => {
+            return this.getCatastro(proxy);
         };
         this.catalog[CatalogLayerName.IGN_FONDO] = (proxy) => {
             return this.getIGN('fondo', proxy);
         };
-        this.catalog[CatalogLayerName.IGN_RASTER] = () => {
-            return this.getIGN('mtn_rasterizado');
+        this.catalog[CatalogLayerName.IGN_RASTER] = (proxy) => {
+            return this.getIGN('mtn_rasterizado', proxy);
         };
-        this.catalog[CatalogLayerName.IGN_BASE] = () => {
-            return this.getBaseIGN();
+        this.catalog[CatalogLayerName.IGN_BASE] = (proxy) => {
+            return this.getBaseIGN(proxy);
         };
-        this.catalog[CatalogLayerName.PNOA_ORTHO] = () => {
-            return this.getPNOA('OI.OrthoimageCoverage');
+        this.catalog[CatalogLayerName.PNOA_ORTHO] = (proxy) => {
+            return this.getPNOA('OI.OrthoimageCoverage', proxy);
         };
-        this.catalog[CatalogLayerName.PNOA_MOSAIC] = () => {
-            return this.getPNOA('OI.MosaicElement');
+        this.catalog[CatalogLayerName.PNOA_MOSAIC] = (proxy) => {
+            return this.getPNOA('OI.MosaicElement', proxy);
         };
         this.catalog[CatalogLayerName.NASA] = () => {
             return this.getNASA();
@@ -85,7 +85,7 @@ class BasemapCatalog {
         return basemap(proxy);
     }
 
-    getCatastro() {
+    getCatastro(proxy) {
         return basemapBuilder.getWMSLayer({
             title: 'Catastro',
             attributions: '© <a target="_blank" href="https://www.sedecatastro.gob.es/">DIRECCION GENERAL DEL CATASTRO</a>',
@@ -93,6 +93,7 @@ class BasemapCatalog {
             layers: 'catastro',
             srs: 'EPSG:3857',
             format: 'image/png',
+            proxy: proxy,
         });
     }
 
@@ -108,7 +109,7 @@ class BasemapCatalog {
         });
     }
 
-    getBaseIGN() {
+    getBaseIGN(proxy) {
         return basemapBuilder.getWMSLayer({
             title: 'IGN',
             attributions: '© <a target="_blank" href="http://www.ign.es">Instituto Geográfico Nacional</a> ',
@@ -116,10 +117,11 @@ class BasemapCatalog {
             layers: 'IGNBaseTodo',
             srs: 'EPSG:3857',
             format: 'image/png',
+            proxy: proxy,
         });
     }
 
-    getPNOA(type) {
+    getPNOA(type, proxy) {
         return basemapBuilder.getWMSLayer({
             title: 'PNOA',
             attributions: '© <a target="_blank" href="http://www.scne.es">Sistema Cartográfico Nacional</a> ',
@@ -127,6 +129,7 @@ class BasemapCatalog {
             layers: type,
             srs: 'EPSG:3857',
             format: 'image/png',
+            proxy: proxy,
         });
     }
 

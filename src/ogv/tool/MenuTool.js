@@ -5,7 +5,10 @@ class MenuTool {
         menuButton.addEventListener('click', this.execute);
 
         const pngDownloadButton = document.getElementById('pngDownloadButton');
-        pngDownloadButton.addEventListener('click', this.download.bind(this, 'PNG'));
+        pngDownloadButton.addEventListener('click', this.download.bind(this, 'png', 'image/png'));
+
+        const jpgDownloadButton = document.getElementById('jpgDownloadButton');
+        jpgDownloadButton.addEventListener('click', this.download.bind(this, 'jpg', 'image/jpeg'));
     }
 
     execute() {
@@ -17,9 +20,9 @@ class MenuTool {
         }
     }
 
-    async download(format) {
+    async download(extension, format) {
         const screenshotConfig = this._mapSetting.mapScreenshot;
-        await screenshotConfig.tool.getScreenshot();
+        await screenshotConfig.tool.getScreenshot(extension, format);
     }
 }
 

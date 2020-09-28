@@ -52,7 +52,7 @@ body {
 }
 
 .ol-scale-line {
-    margin-bottom: 50px;
+    margin-bottom: 10px;
     left: 82px;
     /*border-color: rgb(255, 150, 0);*/
     /* #3f51b5;*/
@@ -80,6 +80,7 @@ body {
     height: 1.1em;
     line-height: 1em;
     max-width: calc(100% - 1.3em);
+    font-size: 1.2vh;
 }
 
 .ol-attribution.ol-uncollapsible img {}

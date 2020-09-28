@@ -40,7 +40,6 @@ const Parameter = Object.freeze({
     LEGEND_COLORWIDTH_RATE: 'legend-colorwidth-rate',
     STROKE_COLOR: 'stroke-color',
     STROKE_WIDTH: 'stroke-width',
-    MAP_SCREENSHOT: 'map-screenshot',
 });
 
 export default Parameter;

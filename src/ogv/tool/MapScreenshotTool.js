@@ -1,5 +1,5 @@
 import TileLayer from 'ol/layer/Tile';
-import proxyTileLoader from '../catalog/ProxyTileLoader';
+import LayerTypeName from '../layer/LayerTypeName';
 const html2canvas = require('html2canvas');
 
 export class MapScreenshotTool {
@@ -8,19 +8,15 @@ export class MapScreenshotTool {
         this._setting.mapScreenshot.tool = this;
     }
 
-    async getScreenshot() {
-        const map = this._setting.map;
-        const raster = this._setting.raster;
-        const rasterProxy = this._setting.rasterProxy;
-
-        // for (const layer of map.getLayers().getArray()) {
-        //     if (layer instanceof TileLayer) {
-        //         layer.getSource().setTileLoadFunction(proxyTileLoader.load.bind(proxyTileLoader));
-        //     }
-        // }
-
-        this.clearTileLayers(map);
-        map.addLayer(rasterProxy);
+    async getScreenshot(extension, format) {
+        this._imageFormat = format;
+        this._imageExtension = extension;
+        this._map = this._setting.map;
+        this._raster = this._setting.raster;
+        this._rasterProxy = this._setting.rasterProxy;
+        this._finish = true; // flag para finalizar directamente o esperar a renderizar leyenda
+        this.clearTileLayers(this._map);
+        this._map.addLayer(this._rasterProxy);
 
         HTMLCanvasElement.prototype.getContext = (function(origFn) {
             return function(type, attributes) {
@@ -34,15 +30,16 @@ export class MapScreenshotTool {
         })(HTMLCanvasElement.prototype.getContext);
 
         const heatMapCanvas = document.getElementsByTagName('canvas')[1];
+        const _addLegend = this.addLengend.bind(this);
 
         const promise = new Promise((resolve, reject) => {
-            map.once('rendercomplete', () => {
-                var mapCanvas = document.createElement('canvas');
+            this._map.once('rendercomplete', () => {
+                const mapCanvas = document.createElement('canvas');
 
-                var size = map.getSize();
+                const size = this._map.getSize();
                 mapCanvas.width = size[0];
                 mapCanvas.height = size[1];
-                var mapContext = mapCanvas.getContext('2d');
+                const mapContext = mapCanvas.getContext('2d');
 
                 Array.prototype.forEach.call(
                     document.querySelectorAll('.ol-layer canvas'),
@@ -63,41 +60,24 @@ export class MapScreenshotTool {
                             );
                             mapContext.drawImage(canvas, 0, 0);
                             if (heatMapCanvas) mapContext.drawImage(heatMapCanvas, 0, 0);
-
-                            // var legend = document.getElementById('simpleLayerLegend');
-
-                            // // 'simpleLayerLegendlegendContent'
-                            // html2canvas(legend).then((canvas) => {
-                            //     var rect = legend.getBoundingClientRect();
-
-                            //     mapContext.drawImage(canvas, rect.left, rect.top);
-                            //     this.download(mapCanvas);
-                            //     resolve({});
-                            // });
+                            _addLegend(mapContext, mapCanvas, resolve);
                         }
                     }
                 );
 
-                this.download(mapCanvas);
-                this.clearTileLayers(map);
-                map.addLayer(raster);
-                resolve({});
-
-                // this.download(mapCanvas);
-                // resolve({});
+                this.finish(mapCanvas, resolve);
             });
-            // map.renderSync();
         });
 
-        map.renderSync();
+        this._map.renderSync();
         return promise;
     }
 
     download(mapCanvas) {
         const element = document.createElement('a');
-        element.setAttribute('href', mapCanvas.toDataURL('PNG'));
+        element.setAttribute('href', mapCanvas.toDataURL(this._imageFormat));
         // element.setAttribute('href', heatMapCanvas.toDataURL('PNG'));
-        element.setAttribute('download', 'map.png');
+        element.setAttribute('download', `map.${this._imageExtension}`);
         element.setAttribute('author', 'OGV GeoWE');
         element.style.display = 'none';
         document.body.appendChild(element);
@@ -111,5 +91,41 @@ export class MapScreenshotTool {
                 map.removeLayer(layer);
             }
         }
+    }
+
+    addLengend(mapContext, mapCanvas, resolve) {
+        const legend = this.getLegend();
+
+        if (legend.style.display === 'none') return false;
+
+        this._finish = false;
+        html2canvas(legend).then((canvas) => {
+            var rect = legend.getBoundingClientRect();
+
+            mapContext.drawImage(canvas, rect.left, rect.top);
+            this._finish = true;
+            this.finish(mapCanvas, resolve);
+        });
+    }
+
+    getLegend() {
+        this._layerSetting = this._setting.layerSetting;
+        let layerTypeName = LayerTypeName.SIMPLE_LAYER;
+
+        if (this._layerSetting[LayerTypeName.THEMATIC_LAYER])
+            layerTypeName = LayerTypeName.THEMATIC_LAYER;
+        else if (this._layerSetting[LayerTypeName.SLD_LAYER])
+            layerTypeName = LayerTypeName.SLD_LAYER;
+
+        return document.getElementById(`${layerTypeName}Legend`);
+    }
+
+    finish(mapCanvas, resolve) {
+        if (!this._finish) return;
+
+        this.download(mapCanvas);
+        this.clearTileLayers(this._map);
+        this._map.addLayer(this._raster);
+        resolve({});
     }
 }
