@@ -17,7 +17,7 @@ export class MapSetting {
         const map = MapInitializer.getMap();
 
         const monitorPanel = new LoadMonitorPanel({
-            parent: map.getOverlayContainerStopEvent(),
+            parent: document.getElementById('monitor'), // document.body, // map.getOverlayContainerStopEvent(),
         });
 
         this._layerSetting = new LayerSetting();
