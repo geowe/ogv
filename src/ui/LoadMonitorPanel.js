@@ -10,8 +10,10 @@ export class LoadMonitorPanel extends VisualElement {
 
     show(msg, width) {
         this.setMessage(msg);
+        this._progressBar.style.display = 'none';
         super.show();
         if (isNaN(width)) return;
+        this._progressBar.style.display = 'block';
         this._progressBar.style.width = `${width}%`;
         this._progressBar.innerHTML = width * 1 + '%';
     }
