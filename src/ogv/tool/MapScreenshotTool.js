@@ -1,6 +1,29 @@
 import TileLayer from 'ol/layer/Tile';
 import LayerTypeName from '../layer/LayerTypeName';
+import domtoimage from 'dom-to-image-more';
 const html2canvas = require('html2canvas');
+
+HTMLCanvasElement.prototype.getContext = (function(origFn) {
+    return function(type, attributes) {
+        if (['experimental-webgl', 'webgl', 'webkit-3d', 'moz-webgl'].includes(type)) {
+            attributes = Object.assign({}, attributes, {
+                preserveDrawingBuffer: true,
+            });
+        }
+        return origFn.call(this, type, attributes);
+    };
+})(HTMLCanvasElement.prototype.getContext);
+
+const exportOptions = {
+    filter: (element) => {
+        var className = element.className || '';
+        return (
+            className.indexOf('ol-control') === -1 ||
+            className.indexOf('ol-scale') > -1 ||
+            (className.indexOf('ol-attribution') > -1 && className.indexOf('ol-uncollapsible'))
+        );
+    },
+};
 
 export class MapScreenshotTool {
     constructor(mapSetting) {
@@ -12,60 +35,15 @@ export class MapScreenshotTool {
         this._imageFormat = format;
         this._imageExtension = extension;
         this._map = this._setting.map;
-        this._raster = this._setting.raster;
-        this._rasterProxy = this._setting.rasterProxy;
-        this._finish = true; // flag para finalizar directamente o esperar a renderizar leyenda
-        this.clearTileLayers(this._map);
-        this._map.addLayer(this._rasterProxy);
-
-        HTMLCanvasElement.prototype.getContext = (function(origFn) {
-            return function(type, attributes) {
-                if (['experimental-webgl', 'webgl', 'webkit-3d', 'moz-webgl'].includes(type)) {
-                    attributes = Object.assign({}, attributes, {
-                        preserveDrawingBuffer: true,
-                    });
-                }
-                return origFn.call(this, type, attributes);
-            };
-        })(HTMLCanvasElement.prototype.getContext);
-
-        const heatMapCanvas = document.getElementsByTagName('canvas')[1];
-        const _addLegend = this.addLengend.bind(this);
 
         const promise = new Promise((resolve, reject) => {
             this._map.once('rendercomplete', () => {
-                const mapCanvas = document.createElement('canvas');
-
-                const size = this._map.getSize();
-                mapCanvas.width = size[0];
-                mapCanvas.height = size[1];
-                const mapContext = mapCanvas.getContext('2d');
-
-                Array.prototype.forEach.call(
-                    document.querySelectorAll('.ol-layer canvas'),
-                    (canvas) => {
-                        if (canvas.width > 0) {
-                            var opacity = canvas.parentNode.style.opacity;
-                            mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
-                            var transform = canvas.style.transform;
-                            // Get the transform parameters from the style's transform matrix
-                            var matrix = transform
-                                .match(/^matrix\(([^\(]*)\)$/)[1]
-                                .split(',')
-                                .map(Number);
-                            // Apply the transform to the export map context
-                            CanvasRenderingContext2D.prototype.setTransform.apply(
-                                mapContext,
-                                matrix
-                            );
-                            mapContext.drawImage(canvas, 0, 0);
-                            if (heatMapCanvas) mapContext.drawImage(heatMapCanvas, 0, 0);
-                            _addLegend(mapContext, mapCanvas, resolve);
-                        }
-                    }
-                );
-
-                this.finish(mapCanvas, resolve);
+                domtoimage.toCanvas(this._map.getViewport(), exportOptions).then(async(canvas) => {
+                    const mapContext = canvas.getContext('2d');
+                    this.addHeatMap(mapContext);
+                    await this.addLegend(mapContext);
+                    this.finish(canvas, resolve);
+                });
             });
         });
 
@@ -85,30 +63,21 @@ export class MapScreenshotTool {
         document.body.removeChild(element);
     }
 
-    clearTileLayers(map) {
-        for (const layer of map.getLayers().getArray()) {
-            if (layer instanceof TileLayer) {
-                map.removeLayer(layer);
-            }
-        }
+    finish(mapCanvas, resolve) {
+        // if (!this._finish) return;
+
+        this.download(mapCanvas);
+        // this.clearTileLayers(this._map);
+        // this._map.addLayer(this._raster);
+        resolve({});
     }
 
-    addLengend(mapContext, mapCanvas, resolve) {
-        const legend = this.getLegend();
-
-        if (legend.style.display === 'none') return false;
-
-        this._finish = false;
-        html2canvas(legend).then((canvas) => {
-            var rect = legend.getBoundingClientRect();
-
-            mapContext.drawImage(canvas, rect.left, rect.top);
-            this._finish = true;
-            this.finish(mapCanvas, resolve);
-        });
+    addHeatMap(mapContext) {
+        const heatMapCanvas = document.getElementsByTagName('canvas')[1];
+        if (heatMapCanvas) mapContext.drawImage(heatMapCanvas, 0, 0);
     }
 
-    getLegend() {
+    getLegendName() {
         this._layerSetting = this._setting.layerSetting;
         let layerTypeName = LayerTypeName.SIMPLE_LAYER;
 
@@ -117,15 +86,25 @@ export class MapScreenshotTool {
         else if (this._layerSetting[LayerTypeName.SLD_LAYER])
             layerTypeName = LayerTypeName.SLD_LAYER;
 
-        return document.getElementById(`${layerTypeName}Legend`);
+        return `${layerTypeName}Legend`;
     }
 
-    finish(mapCanvas, resolve) {
-        if (!this._finish) return;
+    async addLegend(mapContext) {
+        this._layerSetting = this._setting.layerSetting;
+        let layerTypeName = LayerTypeName.SIMPLE_LAYER;
 
-        this.download(mapCanvas);
-        this.clearTileLayers(this._map);
-        this._map.addLayer(this._raster);
-        resolve({});
+        if (this._layerSetting[LayerTypeName.THEMATIC_LAYER])
+            layerTypeName = LayerTypeName.THEMATIC_LAYER;
+        else if (this._layerSetting[LayerTypeName.SLD_LAYER])
+            layerTypeName = LayerTypeName.SLD_LAYER;
+        else if (this._layerSetting[LayerTypeName.HEAT_LAYER])
+            layerTypeName = LayerTypeName.HEAT_LAYER;
+
+        const legendElement = document.getElementById(`${layerTypeName}Legend`);
+        if (legendElement) {
+            const canvas = await html2canvas(legendElement);
+            var rect = legendElement.getBoundingClientRect();
+            mapContext.drawImage(canvas, rect.left, rect.top);
+        }
     }
 }

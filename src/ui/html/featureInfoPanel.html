@@ -1,20 +1,47 @@
-<div class="w3-sidebar  w3-border-right w3-animate-left w3-white w3-card-4" style="z-index: 3;left:10px;bottom:30px;top:90px;width:200px;display:none;font-family: Arial, Helvetica, sans-serif;font-size: .8rem;" id="elementContent">
+<div class="w3-sidebar w3-border-right w3-animate-left w3-white w3-card-4" style="
+        left: 0px;
+        top: 0px;
+        height: 100%;
+        width: 220px;
+        display: none;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 0.8rem;
+        z-index: 80;
+    " id="elementContent">
+    <a class="container w3-btn w3-ripple ogv-info-panel-button" style="font-size: 10px; border-radius: 8px" id="closeContentButton">Cerrar</a
+    >
 
-    <a class="container w3-btn w3-ripple ogv-info-panel-button" style="font-size:10px;border-radius: 8px;" id="closeContentButton">Cerrar</a>
-
-    <div style="overflow-y:auto;max-height:50vh;bottom:30px;">
+    <div>
         <div class="w3-panel">
-            <p class="w3-card-4 w3-indigo w3-center" style="margin:0px;font-weight: bold;">Información</p>
+            <p class="w3-card-4 w3-indigo w3-center" style="margin: 0px; font-weight: bold">
+                Información
+            </p>
         </div>
 
-        <div class="w3-margin" id="content"></div>
+        <div
+            class="w3-margin"
+            style="overflow-y: auto; max-height: 50vh; bottom: 30px"
+            id="content"
+        ></div>
 
         <div class="w3-panel">
-            <p class="w3-card-4 w3-indigo w3-center" style="margin:0px;font-weight: bold;">Geometría</p>
+            <p class="w3-card-4 w3-indigo w3-center" style="margin: 0px; font-weight: bold">
+                Geometría
+            </p>
         </div>
         <div class="w3-margin" id="spatialContent"></div>
-        <a class="container w3-btn w3-ripple ogv-info-panel-button" style="font-size:10px;border-radius: 8px;" id="wktButton"><i class="ms ms-txt-o"></i> WKT</a>
-        <a class="container w3-btn w3-ripple ogv-info-panel-button" style="font-size:10px;border-radius: 8px;" id="featureButton"><i class="ms ms-vector"></i> Feature</a>
-        <br>
+        <a
+            class="container w3-btn w3-ripple ogv-info-panel-button"
+            style="font-size: 10px; border-radius: 8px"
+            id="wktButton"
+            ><i class="ms ms-txt-o"></i> WKT</a
+        >
+        <a
+            class="container w3-btn w3-ripple ogv-info-panel-button"
+            style="font-size: 10px; border-radius: 8px"
+            id="featureButton"
+            ><i class="ms ms-vector"></i> Feature</a
+        >
+        <br />
     </div>
 </div>

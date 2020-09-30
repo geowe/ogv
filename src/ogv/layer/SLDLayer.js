@@ -35,7 +35,7 @@ export class SLDLayer extends BaseLayer {
         this.setLayerLegend(
             new SLDLayerLegend({
                 categories: this._style.getRule(),
-                parent: document.body, // this._map.getOverlayContainerStopEvent()
+                parent: document.body, // this._map.getOverlayContainerStopEvent(),
             })
         );
 
