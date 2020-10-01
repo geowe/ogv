@@ -35,6 +35,12 @@ export class MapScreenshotTool {
         this._imageFormat = format;
         this._imageExtension = extension;
         this._map = this._setting.map;
+        this._raster = this._setting.raster;
+        this._rasterProxy = this._setting.rasterProxy;
+
+        // this.clearTileLayers(this._map);
+        // this._map.addLayer(this._rasterProxy);
+        this.enableProxy();
 
         const promise = new Promise((resolve, reject) => {
             this._map.once('rendercomplete', () => {
@@ -64,9 +70,8 @@ export class MapScreenshotTool {
     }
 
     finish(mapCanvas, resolve) {
-        // if (!this._finish) return;
-
         this.download(mapCanvas);
+        this.enableProxy(false);
         // this.clearTileLayers(this._map);
         // this._map.addLayer(this._raster);
         resolve({});
@@ -106,5 +111,19 @@ export class MapScreenshotTool {
             var rect = legendElement.getBoundingClientRect();
             mapContext.drawImage(canvas, rect.left, rect.top);
         }
+    }
+
+    clearTileLayers(map) {
+        for (const layer of map.getLayers().getArray()) {
+            if (layer instanceof TileLayer) {
+                map.removeLayer(layer);
+            }
+        }
+    }
+
+    enableProxy(state = true) {
+        this.clearTileLayers(this._map);
+        const raster = state ? this._rasterProxy : this._raster;
+        this._map.addLayer(raster);
     }
 }
