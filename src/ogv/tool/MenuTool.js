@@ -12,17 +12,22 @@ class MenuTool {
     }
 
     execute() {
-        var x = document.getElementById('menuOptionsButton');
-        if (x.className.indexOf('w3-show') === -1) {
-            x.className += ' w3-show';
+        this._menuOptionsButton = document.getElementById('menuOptionsButton');
+        if (this._menuOptionsButton.className.indexOf('w3-show') === -1) {
+            this._menuOptionsButton.className += ' w3-show';
         } else {
-            x.className = x.className.replace(' w3-show', '');
+            this._menuOptionsButton.className = this._menuOptionsButton.className.replace(
+                ' w3-show',
+                ''
+            );
         }
     }
 
     async download(extension, format) {
+        this.execute();
         const screenshotConfig = this._mapSetting.mapScreenshot;
         await screenshotConfig.tool.getScreenshot(extension, format);
+        this.execute();
     }
 }
 

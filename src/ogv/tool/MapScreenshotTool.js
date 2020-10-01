@@ -29,9 +29,11 @@ export class MapScreenshotTool {
     constructor(mapSetting) {
         this._setting = mapSetting.getSetting();
         this._setting.mapScreenshot.tool = this;
+        this._loadMonitorPanel = this._setting.monitorPanel;
     }
 
     async getScreenshot(extension, format) {
+        this._loadMonitorPanel.show('Generando captura...');
         this._imageFormat = format;
         this._imageExtension = extension;
         this._map = this._setting.map;
@@ -68,6 +70,7 @@ export class MapScreenshotTool {
     finish(mapCanvas, resolve) {
         this.download(mapCanvas);
         this.enableProxy(false);
+        this._loadMonitorPanel.hide();
         resolve({});
     }
 
