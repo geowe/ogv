@@ -1,3 +1,5 @@
+const QRLogo = require('qr-with-logo');
+
 class MenuTool {
     configure(mapSetting) {
         this._mapSetting = mapSetting;
@@ -9,6 +11,9 @@ class MenuTool {
 
         const jpgDownloadButton = document.getElementById('jpgDownloadButton');
         jpgDownloadButton.addEventListener('click', this.download.bind(this, 'jpg', 'image/jpeg'));
+
+        // const qrCodeDownloadButton = document.getElementById('qrCodeDownloadButton');
+        // qrCodeDownloadButton.addEventListener('click', this.downloadQrCode.bind(this));
     }
 
     execute() {
@@ -29,6 +34,20 @@ class MenuTool {
         await screenshotConfig.tool.getScreenshot(extension, format);
         this.execute();
     }
+
+    // async downloadQrCode() {
+    //     const data = 'http://ogv.geowe.org/';
+
+    //     await QRLogo.generateQRWithLogo(
+    //         data,
+    //         'logo.png', {},
+    //         'Base64',
+    //         'qrlogo.png',
+    //         async function(b64) {
+    //             console.log('Base64: \n' + b64);
+    //         }
+    //     );
+    // }
 }
 
 export default new MenuTool();

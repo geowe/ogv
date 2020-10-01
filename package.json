@@ -71,6 +71,7 @@
         "html2canvas": "^1.0.0-rc.7",
         "mapskin": "^1.0.0",
         "ol": "^6.4.3",
+        "qr-with-logo": "^1.0.4",
         "w3css": "^2.7.0"
     },
     "browserslist": [
