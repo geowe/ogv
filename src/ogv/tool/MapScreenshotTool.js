@@ -37,9 +37,6 @@ export class MapScreenshotTool {
         this._map = this._setting.map;
         this._raster = this._setting.raster;
         this._rasterProxy = this._setting.rasterProxy;
-
-        // this.clearTileLayers(this._map);
-        // this._map.addLayer(this._rasterProxy);
         this.enableProxy();
 
         const promise = new Promise((resolve, reject) => {
@@ -60,7 +57,6 @@ export class MapScreenshotTool {
     download(mapCanvas) {
         const element = document.createElement('a');
         element.setAttribute('href', mapCanvas.toDataURL(this._imageFormat));
-        // element.setAttribute('href', heatMapCanvas.toDataURL('PNG'));
         element.setAttribute('download', `map.${this._imageExtension}`);
         element.setAttribute('author', 'OGV GeoWE');
         element.style.display = 'none';
@@ -72,8 +68,6 @@ export class MapScreenshotTool {
     finish(mapCanvas, resolve) {
         this.download(mapCanvas);
         this.enableProxy(false);
-        // this.clearTileLayers(this._map);
-        // this._map.addLayer(this._raster);
         resolve({});
     }
 
