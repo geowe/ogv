@@ -1,6 +1,8 @@
 import TileLayer from 'ol/layer/Tile';
 import LayerTypeName from '../layer/LayerTypeName';
 import domtoimage from 'dom-to-image-more';
+import QRCode from 'easyqrcodejs/dist/easy.qrcode.min';
+import logo from '../../ui/img/geowe-logo-cuadrado.jpg';
 const html2canvas = require('html2canvas');
 
 HTMLCanvasElement.prototype.getContext = (function(origFn) {
@@ -47,6 +49,7 @@ export class MapScreenshotTool {
                     const mapContext = canvas.getContext('2d');
                     this.addHeatMap(mapContext);
                     await this.addLegend(mapContext);
+                    await this.addQRCode(mapContext);
                     this.finish(canvas, resolve);
                 });
             });
@@ -122,5 +125,47 @@ export class MapScreenshotTool {
         this.clearTileLayers(this._map);
         const raster = state ? this._rasterProxy : this._raster;
         this._map.addLayer(raster);
+    }
+
+    async showQrCode() {
+        const data = window.location.href;
+
+        if (this._qrcode) {
+            this._qrcode.makeCode(data);
+            return;
+        }
+
+        this._qrcode = new QRCode(document.getElementById('qrCode'), {
+            // colorDark: '#8f8e8c',
+            text: data,
+            logo: logo,
+            logoWidth: undefined,
+            logoHeight: undefined,
+            logoBackgroundColor: '#ffffff',
+            logoBackgroundTransparent: true,
+        });
+
+        // this._qrCanvas = await html2canvas(document.getElementById('qrCode'));
+
+        setTimeout(() => {
+            this._qrCodeImage = this._qrcode._el.outerHTML.split('src=')[1];
+            this._qrCodeImage = this._qrCodeImage.substring(
+                1,
+                this._qrCodeImage.indexOf('"></div>')
+            );
+            // console.log(this._qrCodeImage);
+        }, 1000);
+    }
+
+    async addQRCode(mapContext) {
+        if (!this._qrcode) {
+            this.showQrCode();
+        }
+
+        setTimeout(() => {
+            const image = new Image();
+            image.src = this._qrCodeImage;
+            mapContext.drawImage(image, 0, 0);
+        }, 1000);
     }
 }
