@@ -49,7 +49,7 @@ export class MapScreenshotTool {
                     const mapContext = canvas.getContext('2d');
                     this.addHeatMap(mapContext);
                     await this.addLegend(mapContext);
-                    // await this.addQRCode(canvas);
+                    await this.addQRCode(canvas);
                     this.finish(canvas, resolve);
                 });
             });
