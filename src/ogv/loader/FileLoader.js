@@ -73,7 +73,6 @@ export class FileLoader {
                 onFinish: this.endLoadingFile.bind(this),
             });
         }
-
         loadStrategy.load(baseLayer);
         baseLayer.prepareLegend(this._mapSetting);
     }

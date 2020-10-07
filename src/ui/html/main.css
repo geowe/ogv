@@ -158,3 +158,11 @@ div.ol-rotate {
     width: 100%;
     height: 400px;
 }
+
+#qr-qrCode img {
+    margin: auto;
+    /* width: calc(100% - 20px); */
+    max-width: 115px;
+    width: 115px;
+    height: 115px;
+}

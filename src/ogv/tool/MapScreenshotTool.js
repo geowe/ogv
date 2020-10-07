@@ -5,6 +5,12 @@ import QRCode from 'easyqrcodejs/dist/easy.qrcode.min';
 import logo from '../../ui/img/geowe-logo-cuadrado.jpg';
 const html2canvas = require('html2canvas');
 
+const configSize = {
+    mobile: 100,
+    tablet: 150,
+    pc: 200,
+};
+
 HTMLCanvasElement.prototype.getContext = (function(origFn) {
     return function(type, attributes) {
         if (['experimental-webgl', 'webgl', 'webkit-3d', 'moz-webgl'].includes(type)) {
@@ -47,6 +53,7 @@ export class MapScreenshotTool {
             this._map.once('rendercomplete', () => {
                 domtoimage.toCanvas(this._map.getViewport(), exportOptions).then(async(canvas) => {
                     const mapContext = canvas.getContext('2d');
+
                     this.addHeatMap(mapContext);
                     await this.addLegend(mapContext);
                     await this.addQRCode(canvas);
@@ -106,10 +113,14 @@ export class MapScreenshotTool {
             layerTypeName = LayerTypeName.HEAT_LAYER;
 
         const legendElement = document.getElementById(`${layerTypeName}Legend`);
+
         if (legendElement) {
-            const canvas = await html2canvas(legendElement);
-            var rect = legendElement.getBoundingClientRect();
-            mapContext.drawImage(canvas, rect.left, rect.top);
+            const canvas = await html2canvas(legendElement)
+                .then((canvas) => {
+                    var rect = legendElement.getBoundingClientRect();
+                    mapContext.drawImage(canvas, rect.left, rect.top);
+                })
+                .catch(() => {});
         }
     }
 
@@ -128,7 +139,10 @@ export class MapScreenshotTool {
     }
 
     async showQrCode(canvas) {
-        const qrSize = this.isMobile() ? 150 : 250;
+        // ancho: > 1000 pc;  768 tablet; 360 movil
+        const qrSize = this.getQRCodeSize(canvas.width);
+        // alert(canvas.width + ' ' + canvas.height);
+
         const promise = new Promise((resolve, reject) => {
             const data = window.location.href;
 
@@ -157,7 +171,7 @@ export class MapScreenshotTool {
                     this._qrCodeImage.indexOf('"></div>')
                 );
 
-                this._qrCodeImage = await this.resizedataURL(this._qrCodeImage, qrSize, qrSize);
+                // this._qrCodeImage = await this.resizedataURL(this._qrCodeImage, qrSize, qrSize);
                 resolve({});
             }, 1000);
         });
@@ -212,7 +226,12 @@ export class MapScreenshotTool {
             });
         } // Use it lik
 
-    isMobile() {
-        return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    getQRCodeSize(width) {
+        // ancho: > 1000 pc;  768 tablet; 360 movil
+        let size = configSize.mobile;
+        if (width > 600 && width < 1000) size = configSize.tablet;
+        if (width > 1000) size = configSize.pc;
+
+        return size;
     }
 }
