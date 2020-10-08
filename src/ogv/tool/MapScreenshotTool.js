@@ -49,6 +49,8 @@ export class MapScreenshotTool {
         this._rasterProxy = this._setting.rasterProxy;
         this.enableProxy();
 
+        this._mapWidth = this._map.getSize()[0];
+
         const promise = new Promise((resolve, reject) => {
             this._map.once('rendercomplete', () => {
                 domtoimage.toCanvas(this._map.getViewport(), exportOptions).then(async(canvas) => {
@@ -140,7 +142,7 @@ export class MapScreenshotTool {
     async showQrCode() {
         this._loadMonitorPanel.show('Generando código QR del mapa...');
         const promise = new Promise((resolve, reject) => {
-            const qrSize = this.getQRCodeSize(screen.width);
+            const qrSize = this.getQRCodeSize();
             const data = window.location.href;
 
             const qrCodeElement = document.getElementById('qrCode');
@@ -180,7 +182,7 @@ export class MapScreenshotTool {
             const img = new Image();
 
             img.onload = () => {
-                mapContext.drawImage(img, screen.width - img.width, 60);
+                mapContext.drawImage(img, this._mapWidth - img.width, 60);
                 resolve();
             };
             img.src = qrCodeImage;
@@ -217,11 +219,11 @@ export class MapScreenshotTool {
     //         });
     //     } // Use it lik
 
-    getQRCodeSize(width) {
+    getQRCodeSize() {
         // ancho: > 1000 pc;  768 tablet; 360 movil
         let size = configSize.mobile;
-        if (width > 600 && width < 1000) size = configSize.tablet;
-        if (width > 1000) size = configSize.pc;
+        if (this._mapWidth > 600 && this._mapWidth < 1000) size = configSize.tablet;
+        if (this._mapWidth > 1000) size = configSize.pc;
 
         return size;
     }
