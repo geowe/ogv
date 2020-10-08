@@ -11,6 +11,7 @@ class MenuTool {
         jpgDownloadButton.addEventListener('click', this.download.bind(this, 'jpg', 'image/jpeg'));
 
         const qrCodeDownloadButton = document.getElementById('qrCodeDownloadButton');
+
         qrCodeDownloadButton.addEventListener('click', this.showQRCode.bind(this));
     }
 
@@ -34,8 +35,11 @@ class MenuTool {
     }
 
     async showQRCode() {
+        const qrCodeImageElement = document.getElementById('qrCodeImage');
+        qrCodeImageElement.src = '';
         const screenshotConfig = this._mapSetting.mapScreenshot;
-        screenshotConfig.tool.showQrCode();
+        const qrCodeImage = await screenshotConfig.tool.showQrCode('qrCode');
+        qrCodeImageElement.src = qrCodeImage;
     }
 }
 

@@ -53,10 +53,9 @@ export class MapScreenshotTool {
             this._map.once('rendercomplete', () => {
                 domtoimage.toCanvas(this._map.getViewport(), exportOptions).then(async(canvas) => {
                     const mapContext = canvas.getContext('2d');
-
                     this.addHeatMap(mapContext);
                     await this.addLegend(mapContext);
-                    await this.addQRCode(canvas);
+                    await this.addQRCode(mapContext);
                     this.finish(canvas, resolve);
                 });
             });
@@ -138,20 +137,16 @@ export class MapScreenshotTool {
         this._map.addLayer(raster);
     }
 
-    async showQrCode(canvas) {
-        // ancho: > 1000 pc;  768 tablet; 360 movil
-        const qrSize = this.getQRCodeSize(canvas.width);
-        // alert(canvas.width + ' ' + canvas.height);
-
+    async showQrCode() {
+        this._loadMonitorPanel.show('Generando código QR del mapa...');
         const promise = new Promise((resolve, reject) => {
+            const qrSize = this.getQRCodeSize(screen.width);
             const data = window.location.href;
 
-            if (this._qrcode) {
-                this._qrcode.makeCode(data);
-                return;
-            }
+            const qrCodeElement = document.getElementById('qrCode');
+            // if (!screenshot) qrCodeElement.innerHTML = '';
 
-            this._qrcode = new QRCode(document.getElementById('qrCode'), {
+            const qrcode = new QRCode(qrCodeElement, {
                 // colorDark: '#8f8e8c',
                 width: qrSize,
                 height: qrSize,
@@ -164,67 +159,63 @@ export class MapScreenshotTool {
                 correctLevel: QRCode.CorrectLevel.H,
             });
 
-            setTimeout(async() => {
-                this._qrCodeImage = this._qrcode._el.outerHTML.split('src=')[1];
-                this._qrCodeImage = this._qrCodeImage.substring(
-                    1,
-                    this._qrCodeImage.indexOf('"></div>')
-                );
+            setTimeout(() => {
+                let qrCodeImage = qrcode._el.outerHTML.split('src=')[1];
+                qrCodeImage = qrCodeImage.substring(1, qrCodeImage.indexOf('"></div>'));
 
                 // this._qrCodeImage = await this.resizedataURL(this._qrCodeImage, qrSize, qrSize);
-                resolve({});
+                qrcode.clear();
+                this._loadMonitorPanel.hide();
+                resolve(qrCodeImage);
             }, 1000);
         });
 
         return promise;
     }
 
-    async addQRCode(canvas) {
-        if (!this._qrcode) {
-            await this.showQrCode(canvas);
-        }
+    async addQRCode(mapContext) {
+        const promise = new Promise(async(resolve, reject) => {
+            const qrCodeImage = await this.showQrCode();
 
-        const promise = new Promise((resolve, reject) => {
             const img = new Image();
 
             img.onload = () => {
-                const mapContext = canvas.getContext('2d');
-                mapContext.drawImage(img, canvas.width - img.width, 60);
-                resolve({});
+                mapContext.drawImage(img, screen.width - img.width, 60);
+                resolve();
             };
-            img.src = this._qrCodeImage;
+            img.src = qrCodeImage;
         });
 
         return promise;
     }
 
-    resizedataURL(datas, wantedWidth, wantedHeight) {
-            return new Promise(async function(resolve, reject) {
-                // We create an image to receive the Data URI
-                var img = document.createElement('img');
+    // resizedataURL(datas, wantedWidth, wantedHeight) {
+    //         return new Promise(async function(resolve, reject) {
+    //             // We create an image to receive the Data URI
+    //             var img = document.createElement('img');
 
-                // When the event "onload" is triggered we can resize the image.
-                img.onload = function() {
-                    // We create a canvas and get its context.
-                    var canvas = document.createElement('canvas');
-                    var ctx = canvas.getContext('2d');
+    //             // When the event "onload" is triggered we can resize the image.
+    //             img.onload = function() {
+    //                 // We create a canvas and get its context.
+    //                 var canvas = document.createElement('canvas');
+    //                 var ctx = canvas.getContext('2d');
 
-                    // We set the dimensions at the wanted size.
-                    // var dpr = window.devicePixelRatio || 1;
-                    canvas.width = wantedWidth;
-                    canvas.height = wantedHeight;
+    //                 // We set the dimensions at the wanted size.
+    //                 // var dpr = window.devicePixelRatio || 1;
+    //                 canvas.width = wantedWidth;
+    //                 canvas.height = wantedHeight;
 
-                    // We resize the image with the canvas method drawImage();
-                    ctx.drawImage(this, 0, 0, wantedWidth, wantedHeight);
-                    ctx.scale(0.5, 0.5);
-                    var dataURI = canvas.toDataURL();
+    //                 // We resize the image with the canvas method drawImage();
+    //                 ctx.drawImage(this, 0, 0, wantedWidth, wantedHeight);
+    //                 ctx.scale(0.5, 0.5);
+    //                 var dataURI = canvas.toDataURL();
 
-                    // This is the return of the Promise
-                    resolve(dataURI);
-                };
-                img.src = datas;
-            });
-        } // Use it lik
+    //                 // This is the return of the Promise
+    //                 resolve(dataURI);
+    //             };
+    //             img.src = datas;
+    //         });
+    //     } // Use it lik
 
     getQRCodeSize(width) {
         // ancho: > 1000 pc;  768 tablet; 360 movil
