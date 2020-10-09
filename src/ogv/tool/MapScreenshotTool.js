@@ -5,12 +5,6 @@ import QRCode from 'easyqrcodejs/dist/easy.qrcode.min';
 import logo from '../../ui/img/geowe-logo-cuadrado.jpg';
 const html2canvas = require('html2canvas');
 
-const configSize = {
-    mobile: 100,
-    tablet: 150,
-    pc: 200,
-};
-
 HTMLCanvasElement.prototype.getContext = (function(origFn) {
     return function(type, attributes) {
         if (['experimental-webgl', 'webgl', 'webkit-3d', 'moz-webgl'].includes(type)) {
@@ -38,28 +32,34 @@ export class MapScreenshotTool {
         this._setting = mapSetting.getSetting();
         this._setting.mapScreenshot.tool = this;
         this._loadMonitorPanel = this._setting.monitorPanel;
+        this._map = this._setting.map;
     }
 
     async getScreenshot(extension, format) {
         this._loadMonitorPanel.show('Generando captura...');
         this._imageFormat = format;
         this._imageExtension = extension;
-        this._map = this._setting.map;
         this._raster = this._setting.raster;
         this._rasterProxy = this._setting.rasterProxy;
         this.enableProxy();
 
-        this._mapWidth = this._map.getSize()[0];
-
         const promise = new Promise((resolve, reject) => {
             this._map.once('rendercomplete', () => {
-                domtoimage.toCanvas(this._map.getViewport(), exportOptions).then(async(canvas) => {
-                    const mapContext = canvas.getContext('2d');
-                    this.addHeatMap(mapContext);
-                    await this.addLegend(mapContext);
-                    await this.addQRCode(mapContext);
-                    this.finish(canvas, resolve);
-                });
+                domtoimage
+                    .toCanvas(this._map.getViewport(), exportOptions)
+                    .then(async(canvas) => {
+                        const mapContext = canvas.getContext('2d');
+                        this.addHeatMap(mapContext);
+                        await this.addLegend(mapContext);
+                        if (!this.isMobile()) await this.addQRCode(mapContext);
+                        this.finish(canvas, resolve);
+                    })
+                    .catch((err) => {
+                        alert('No se permite la captura del mapa');
+                        this.enableProxy(false);
+                        this._loadMonitorPanel.hide();
+                        resolve({});
+                    });
             });
         });
 
@@ -142,7 +142,7 @@ export class MapScreenshotTool {
     async showQrCode() {
         this._loadMonitorPanel.show('Generando código QR del mapa...');
         const promise = new Promise((resolve, reject) => {
-            const qrSize = this.getQRCodeSize();
+            const qrSize = 200; // this.getQRCodeSize();
             const data = window.location.href;
 
             const qrCodeElement = document.getElementById('qrCode');
@@ -178,11 +178,11 @@ export class MapScreenshotTool {
     async addQRCode(mapContext) {
         const promise = new Promise(async(resolve, reject) => {
             const qrCodeImage = await this.showQrCode();
-
             const img = new Image();
 
             img.onload = () => {
-                mapContext.drawImage(img, this._mapWidth - img.width, 60);
+                const mapWidth = this._map.getSize()[0];
+                mapContext.drawImage(img, mapWidth - img.width, 60);
                 resolve();
             };
             img.src = qrCodeImage;
@@ -219,12 +219,20 @@ export class MapScreenshotTool {
     //         });
     //     } // Use it lik
 
-    getQRCodeSize() {
-        // ancho: > 1000 pc;  768 tablet; 360 movil
-        let size = configSize.mobile;
-        if (this._mapWidth > 600 && this._mapWidth < 1000) size = configSize.tablet;
-        if (this._mapWidth > 1000) size = configSize.pc;
+    // getQRCodeSize() {
+    //     // ancho: > 1000 pc;  768 tablet; 360 movil
+    //     this._mapWidth = this._map.getSize()[0];
+    //     // let size = configSize.mobile;
+    //     // if (this._mapWidth > 600 && this._mapWidth < 1000) size = configSize.tablet;
+    //     // if (this._mapWidth > 1000) size = configSize.pc;
 
-        return size;
+    //     // return size;
+    //     return 200;
+    // }
+
+    isMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+        );
     }
 }

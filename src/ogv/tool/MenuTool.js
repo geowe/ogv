@@ -39,6 +39,7 @@ class MenuTool {
         qrCodeImageElement.src = '';
         const screenshotConfig = this._mapSetting.mapScreenshot;
         const qrCodeImage = await screenshotConfig.tool.showQrCode('qrCode');
+        qrCodeImageElement.className = qrCodeImageElement.className.replace(' w3-hide', '');
         qrCodeImageElement.src = qrCodeImage;
     }
 }

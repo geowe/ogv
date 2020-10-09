@@ -79,8 +79,8 @@ body {
     border-radius: 4px 0 0;
     height: 1.1em;
     line-height: 1em;
-    max-width: calc(100% - 1.3em);
-    font-size: 1.2vh;
+    /* max-width: calc(100% - 1.3em); */
+    font-size: 10px;
 }
 
 .ol-attribution.ol-uncollapsible img {}
@@ -157,12 +157,4 @@ div.ol-rotate {
     margin-bottom: 10px;
     width: 100%;
     height: 400px;
-}
-
-#qr-qrCode img {
-    margin: auto;
-    /* width: calc(100% - 20px); */
-    max-width: 115px;
-    width: 115px;
-    height: 115px;
 }
