@@ -51,7 +51,7 @@ export class MapScreenshotTool {
                         const mapContext = canvas.getContext('2d');
                         this.addHeatMap(mapContext);
                         await this.addLegend(mapContext);
-                        if (!this.isMobile()) await this.addQRCode(mapContext);
+                        // await this.addQRCode(mapContext);
                         this.finish(canvas, resolve);
                     })
                     .catch((err) => {
@@ -229,10 +229,4 @@ export class MapScreenshotTool {
     //     // return size;
     //     return 200;
     // }
-
-    isMobile() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-            navigator.userAgent
-        );
-    }
 }

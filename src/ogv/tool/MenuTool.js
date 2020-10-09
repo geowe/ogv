@@ -12,7 +12,7 @@ class MenuTool {
 
         const qrCodeDownloadButton = document.getElementById('qrCodeDownloadButton');
 
-        qrCodeDownloadButton.addEventListener('click', this.showQRCode.bind(this));
+        qrCodeDownloadButton.addEventListener('click', this.showQRCodeAndDownload.bind(this));
     }
 
     execute() {
@@ -34,13 +34,21 @@ class MenuTool {
         this.execute();
     }
 
-    async showQRCode() {
+    async showQRCodeAndDownload() {
         const qrCodeImageElement = document.getElementById('qrCodeImage');
         qrCodeImageElement.src = '';
         const screenshotConfig = this._mapSetting.mapScreenshot;
         const qrCodeImage = await screenshotConfig.tool.showQrCode('qrCode');
-        qrCodeImageElement.className = qrCodeImageElement.className.replace(' w3-hide', '');
+        qrCodeImageElement.className = qrCodeImageElement.className.replace('w3-hide', '');
         qrCodeImageElement.src = qrCodeImage;
+
+        const element = document.createElement('a');
+        element.setAttribute('href', qrCodeImage);
+        element.setAttribute('download', `geoweMapQRCode.png`);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
     }
 }
 
