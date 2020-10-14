@@ -7,7 +7,7 @@ export class SelectTool {
         this._style = new SelectToolStyle();
 
         this._featureInfoPanel = new FeatureInfoPanel({
-            parent: document.getElementById('infoPanel'), // setting.map.getOverlayContainerStopEvent(),
+            parent: document.getElementById('featureInfoPanelContainer'), // setting.map.getOverlayContainerStopEvent(),
             allowNullAttribute: setting.info.allowNullAttribute,
         });
 

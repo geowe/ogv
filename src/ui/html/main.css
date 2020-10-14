@@ -119,6 +119,14 @@ div.ol-rotate {
     right: 0;
 }
 
+.ogv-tool {
+    background-color: rgb(255, 150, 0) !important;
+}
+
+.ogv-info-panel-button {
+    background-color: rgb(244, 67, 54) !important;
+}
+
 .map:-webkit-full-screen {
     height: 100%;
     margin: 0;
@@ -130,14 +138,6 @@ div.ol-rotate {
 
 .map:fullscreen {
     height: 100%;
-}
-
-.ogv-tool {
-    background-color: rgb(255, 150, 0) !important;
-}
-
-.ogv-info-panel-button {
-    background-color: rgb(244, 67, 54) !important;
 }
 
 .fullscreen:-webkit-full-screen {
