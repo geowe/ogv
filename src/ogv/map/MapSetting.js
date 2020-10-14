@@ -25,6 +25,9 @@ export class MapSetting {
         this._setting = {
             map: map,
             monitorPanel: monitorPanel,
+            basemapOpacity: urlParser.has(Parameter.BASEMAP_ALPHA) ?
+                urlParser.get(Parameter.BASEMAP_ALPHA) :
+                1,
             loader: {
                 isAllTypeLoad: loadStrategyType === Parameter.ALL_LOAD_TYPE,
                 isIncrementalTypeLoad: loadStrategyType === Parameter.INC_LOAD_TYPE,
