@@ -1,3 +1,5 @@
+import reportGeneratorTool from './ReportGeneratorTool';
+
 class MenuTool {
     configure(mapSetting) {
         this._mapSetting = mapSetting;
@@ -9,6 +11,9 @@ class MenuTool {
 
         const jpgDownloadButton = document.getElementById('jpgDownloadButton');
         jpgDownloadButton.addEventListener('click', this.download.bind(this, 'jpg', 'image/jpeg'));
+
+        const pdfDownloadButton = document.getElementById('pdfDownloadButton');
+        pdfDownloadButton.addEventListener('click', this.generatePDF.bind(this));
 
         const qrCodeDownloadButton = document.getElementById('qrCodeDownloadButton');
 
@@ -49,6 +54,10 @@ class MenuTool {
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
+    }
+
+    async generatePDF() {
+        reportGeneratorTool.generate(this._mapSetting);
     }
 }
 

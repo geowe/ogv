@@ -5,6 +5,13 @@ import QRCode from 'easyqrcodejs/dist/easy.qrcode.min';
 import logo from '../../ui/img/geowe-logo-cuadrado.jpg';
 const html2canvas = require('html2canvas');
 
+// const DIN_A4 = [190, 210];
+// const RESOLUTION_DPI = 120;
+// const DIN = DIN_A4;
+// // 1 ppi = 1 dpi = 1 Pixeles por Inch(25.4 mm)
+// const widthPixel = Math.round((DIN[0] * RESOLUTION_DPI) / 25.4);
+// const heightPixel = Math.round((DIN[1] * RESOLUTION_DPI) / 25.4);
+
 HTMLCanvasElement.prototype.getContext = (function(origFn) {
     return function(type, attributes) {
         if (['experimental-webgl', 'webgl', 'webkit-3d', 'moz-webgl'].includes(type)) {
@@ -35,13 +42,15 @@ export class MapScreenshotTool {
         this._map = this._setting.map;
     }
 
-    async getScreenshot(extension, format) {
+    async getScreenshot(extension, format, autoDonwload = true) {
         this._loadMonitorPanel.show('Generando captura...');
         this._imageFormat = format;
         this._imageExtension = extension;
         this._raster = this._setting.raster;
         this._rasterProxy = this._setting.rasterProxy;
         this.enableProxy();
+        const size = this._map.getSize();
+        const viewResolution = this._map.getView().getResolution();
 
         const promise = new Promise((resolve, reject) => {
             this._map.once('rendercomplete', () => {
@@ -52,7 +61,10 @@ export class MapScreenshotTool {
                         this.addHeatMap(mapContext);
                         await this.addLegend(mapContext);
                         // await this.addQRCode(mapContext);
-                        this.finish(canvas, resolve);
+
+                        this.finish(canvas, resolve, autoDonwload);
+
+                        // this._map.updateSize();
                     })
                     .catch((err) => {
                         alert('No se permite la captura del mapa');
@@ -63,13 +75,19 @@ export class MapScreenshotTool {
             });
         });
 
-        this._map.renderSync();
+        // var printSize = [widthPixel, heightPixel];
+        // this._map.setSize(printSize);
+        // this._map.getView().setResolution(viewResolution);
+
+        setTimeout(() => {
+            this._map.renderSync();
+        }, 1000);
         return promise;
     }
 
-    download(mapCanvas) {
+    download(base64Image) {
         const element = document.createElement('a');
-        element.setAttribute('href', mapCanvas.toDataURL(this._imageFormat));
+        element.setAttribute('href', base64Image);
         element.setAttribute('download', `map.${this._imageExtension}`);
         element.setAttribute('author', 'OGV GeoWE');
         element.style.display = 'none';
@@ -78,11 +96,12 @@ export class MapScreenshotTool {
         document.body.removeChild(element);
     }
 
-    finish(mapCanvas, resolve) {
-        this.download(mapCanvas);
+    finish(mapCanvas, resolve, autoDonwload) {
+        const base64Image = mapCanvas.toDataURL(this._imageFormat);
+        if (autoDonwload) this.download(base64Image);
         this.enableProxy(false);
         this._loadMonitorPanel.hide();
-        resolve({});
+        resolve(base64Image);
     }
 
     addHeatMap(mapContext) {
