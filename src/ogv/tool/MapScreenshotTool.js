@@ -163,8 +163,8 @@ export class MapScreenshotTool {
 
             setTimeout(() => {
                 let qrCodeImage = qrcode._el.outerHTML.split('src=')[1];
-                qrCodeImage = qrCodeImage.substring(1, qrCodeImage.indexOf('"></div>'));
-
+                // qrCodeImage = qrCodeImage.substring(1, qrCodeImage.indexOf('"></div>'));
+                qrCodeImage = qrCodeImage.split('"')[1];
                 // this._qrCodeImage = await this.resizedataURL(this._qrCodeImage, qrSize, qrSize);
                 qrcode.clear();
                 this._loadMonitorPanel.hide();
