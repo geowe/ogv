@@ -37,7 +37,8 @@ export class MapSetting {
             },
             title: {
                 hasTitle: urlParser.has(Parameter.TITLE),
-                value: this.getTitleValue(),
+                value: this.getHTMLTitleValue(),
+                titleText: this.getTitleValue(),
             },
             info: {
                 allowNullAttribute: !urlParser.has(Parameter.ATTRIBUTE_NO_NULL),
@@ -103,7 +104,7 @@ export class MapSetting {
         }
     }
 
-    getTitleValue() {
+    getHTMLTitleValue() {
         let size = `size="${DEFAULT_TITLE_SIZE}"`;
         let color = `color="${DEFAULT_TITLE_COLOR}"`;
         const face = `face="${DEFAULT_TITLE_FACE}"`;
@@ -115,6 +116,10 @@ export class MapSetting {
             color = `color=${urlParser.get(Parameter.TITLE_COLOR)}`;
         }
         return `<font ${size} ${color} ${face}>${urlParser.get(Parameter.TITLE)} </font>`;
+    }
+
+    getTitleValue() {
+        return `${urlParser.get(Parameter.TITLE)}`;
     }
 
     getSetting() {

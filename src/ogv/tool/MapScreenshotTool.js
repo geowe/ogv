@@ -5,12 +5,12 @@ import QRCode from 'easyqrcodejs/dist/easy.qrcode.min';
 import logo from '../../ui/img/geowe-logo-cuadrado.jpg';
 const html2canvas = require('html2canvas');
 
-// const DIN_A4 = [190, 210];
-// const RESOLUTION_DPI = 120;
-// const DIN = DIN_A4;
-// // 1 ppi = 1 dpi = 1 Pixeles por Inch(25.4 mm)
-// const widthPixel = Math.round((DIN[0] * RESOLUTION_DPI) / 25.4);
-// const heightPixel = Math.round((DIN[1] * RESOLUTION_DPI) / 25.4);
+const DIN_A4 = [190, 210];
+const RESOLUTION_DPI = 120;
+const DIN = DIN_A4;
+// 1 ppi = 1 dpi = 1 Pixeles por Inch(25.4 mm)
+const widthPixel = Math.round((DIN[0] * RESOLUTION_DPI) / 25.4);
+const heightPixel = Math.round((DIN[1] * RESOLUTION_DPI) / 25.4);
 
 HTMLCanvasElement.prototype.getContext = (function(origFn) {
     return function(type, attributes) {
@@ -49,7 +49,11 @@ export class MapScreenshotTool {
         this._raster = this._setting.raster;
         this._rasterProxy = this._setting.rasterProxy;
         this.enableProxy();
-        const size = this._map.getSize();
+        // const size = this._map.getSize();
+        const size = [
+            document.getElementById('map').style.width,
+            document.getElementById('map').style.height,
+        ];
         const viewResolution = this._map.getView().getResolution();
 
         const promise = new Promise((resolve, reject) => {
@@ -62,7 +66,15 @@ export class MapScreenshotTool {
                         await this.addLegend(mapContext);
                         // await this.addQRCode(mapContext);
 
+                        document.getElementById('map').style.width = `100%`;
+                        document.getElementById('map').style.height = `100%`;
+                        this._map.updateSize();
+
                         this.finish(canvas, resolve, autoDonwload);
+
+                        // this._map.setSize(size);
+
+                        // this._map.getView().setResolution(viewResolution);
 
                         // this._map.updateSize();
                     })
@@ -75,9 +87,12 @@ export class MapScreenshotTool {
             });
         });
 
+        document.getElementById('map').style.width = `${widthPixel}px`; // '2244px';
+        document.getElementById('map').style.height = `${heightPixel}px`; // '2480px';
+        this._map.updateSize();
+
         // var printSize = [widthPixel, heightPixel];
         // this._map.setSize(printSize);
-        // this._map.getView().setResolution(viewResolution);
 
         setTimeout(() => {
             this._map.renderSync();
@@ -138,7 +153,11 @@ export class MapScreenshotTool {
             const canvas = await html2canvas(legendElement)
                 .then((canvas) => {
                     var rect = legendElement.getBoundingClientRect();
-                    mapContext.drawImage(canvas, rect.left, rect.top);
+                    const mapWidth = this._map.getSize()[0];
+                    const mapHeight = this._map.getSize()[1];
+                    mapContext.drawImage(canvas, rect.left, mapHeight - canvas.height - 70);
+                    // mapContext.drawImage(canvas, mapWidth - canvas.width, rect.top);
+                    // mapContext.drawImage(canvas, rect.left, rect.top);
                 })
                 .catch(() => {});
         }
