@@ -1,9 +1,10 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
-import VectorImageLayer from 'ol/layer/VectorImage';
+import { VectorImage as VectorImageLayer, Vector as VectorLayer } from 'ol/layer';
 import page3 from './report/Page3';
 import page4 from './report/Page4';
+import geowebg from '../../ui/img/geowe-bg.jpg';
 
 const PDF_PARAMETER = {
     orientation: 'p',
@@ -15,6 +16,13 @@ const LEFT_MARGIN = 10;
 const RIGHT_MARGIN = 10;
 const PDF_IN_MM = 210;
 const QR_CODE_SIZE = 50;
+
+const DISCLAIMER = `La información presentada en este informe ha sido generada dinámicamente a partir de los orígenes de datos geográficos visualizados en OGV, los cuales son propiedad de sus respectivos dueños y pueden cambiar en el tiempo.
+
+Garantías y renuncia de responsabilidad
+GeoWE.org no se hace responsable y no puede ofrecer garantías en relación de la veracidad, fiabilidad y calidad de los datos.
+
+GeoWE SE PRESENTA "TAL CUAL", SIN GARANTÍAS O CONDICIONES DE CUALQUIER TIPO (ya sea explícita o implícita). EN NINGÚN CASO GeoWE (ni sus integrantes) SERÁN RESPONSABLES DE LA PÉRDIDA O DAÑO QUE PUDIERAN DERIVAR DEL USO DEL SISTEMA. `;
 
 class ReportGeneratorTool {
     async generate(mapSetting) {
@@ -37,6 +45,7 @@ class ReportGeneratorTool {
         // this._doc.setFontStyle('bold');
 
         await this.addPage1(screenshotConfig, title);
+        this.addDisclaimer();
         await this.addPage2(screenshotConfig);
         const layers = this.getLayers();
         page3.addPage(this._doc, layers);
@@ -102,6 +111,7 @@ class ReportGeneratorTool {
     }
 
     async addPage1(screenshotConfig, title) {
+        this._doc.addImage(geowebg, 'JPG', 0, 0, 210, 298);
         let y = 50;
 
         this._doc.setFontStyle('bold');
@@ -113,12 +123,22 @@ class ReportGeneratorTool {
         var qrImageOffset = (this._doc.internal.pageSize.getWidth() - QR_CODE_SIZE) / 2; // - LEFT_MARGIN - RIGHT_MARGIN
         this._doc.addImage(qrCodeImage, 'PNG', qrImageOffset, y, QR_CODE_SIZE, QR_CODE_SIZE);
 
+        this._doc.line(45, 236, 165, 236);
         y = 240;
+        this._doc.setFontStyle('bold');
         this.centeredText(
-            'Informe generado por OGV de GeoWE.org el' + this.getCurrentDate(),
+            'Informe generado por OGV de GeoWE.org el ' + this.getCurrentDate(),
             y,
-            14
+            11
         );
+    }
+
+    async addDisclaimer() {
+        this._doc.addPage();
+        const y = 20;
+        this._doc.setFontStyle('bold');
+        this._doc.setFontSize(14);
+        this.centeredText(DISCLAIMER, y);
     }
 
     async addPage2(screenshotConfig) {
@@ -127,7 +147,7 @@ class ReportGeneratorTool {
         let y = 20;
         this._doc.setFontStyle('bold');
         this._doc.setFontSize(14);
-        this._doc.text(LEFT_MARGIN, y, 'REPRESENTACIÓN GRÁFICA');
+        this._doc.text(LEFT_MARGIN, y, '1.- REPRESENTACIÓN GRÁFICA');
         y += 5;
         this._doc.addImage(base64Image, 'PNG', 10, y, 190, 210);
     }
@@ -139,7 +159,7 @@ class ReportGeneratorTool {
         // this._map.getLayers().forEach((layer) => {
         const currentLayers = this._map.getLayers().getArray();
         for (const layer of currentLayers) {
-            if (layer instanceof VectorImageLayer) {
+            if (layer instanceof VectorImageLayer || layer instanceof VectorLayer) {
                 layers.push(layer);
             }
         }

@@ -1,5 +1,5 @@
 const LEFT_MARGIN = 10;
-const PAGE_TITLE = 'RESUMEN';
+const PAGE_TITLE = '2.- RESUMEN';
 const ID_COLUMN_STYLE = {
     halign: 'left',
     fillColor: [213, 214, 210],

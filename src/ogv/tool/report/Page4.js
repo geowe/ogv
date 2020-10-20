@@ -1,4 +1,5 @@
 const LEFT_MARGIN = 10;
+const MAX_COLUMN_DEFAULT = 8;
 
 class Page4 {
     addPage(doc, layers) {
@@ -8,13 +9,18 @@ class Page4 {
         let y = 25;
         let count = 1;
         for (const layer of layers) {
-            doc.addPage();
+            const columns = this.getHead(layer);
+            const columnsCount = columns[0].length;
+
+            if (columnsCount > MAX_COLUMN_DEFAULT) doc.addPage('a4', 'landscape');
+            else doc.addPage();
+
             if (count === 1) {
                 doc.setFontStyle('bold');
                 doc.setFontSize(14);
                 doc.text(LEFT_MARGIN, y, '3.- INFORMACIÓN ALFANUMÉRICA');
                 y = 35;
-            } else y = 25;
+            } else y = 20;
 
             doc.setFontSize(12);
             doc.setFontStyle('bold');
@@ -26,16 +32,17 @@ class Page4 {
             doc.setFontStyle('normal');
             doc.text(LEFT_MARGIN, y, 'Detalle de la información asociada al origen de datos');
             y += 5;
-            y = y + this.addTable(doc, layer, y);
+            y = y + this.addTable(doc, layer, y, columns);
         }
     }
 
-    addTable(doc, layer, y) {
+    addTable(doc, layer, y, columns) {
         doc.autoTable({
-            margin: { top: 40, left: LEFT_MARGIN },
+            margin: { top: 20, left: LEFT_MARGIN },
             startY: y,
             tableLineColor: [189, 195, 199],
             tableLineWidth: 0.75,
+            tableWidth: 'wrap',
             headStyles: {
                 fillColor: [204, 204, 204],
                 textColor: [78, 53, 73],
@@ -48,9 +55,10 @@ class Page4 {
                 lineWidth: 0.2,
                 lineColor: 0,
                 halign: 'center',
+                overflow: 'linebreak',
             },
 
-            head: this.getHead(layer),
+            head: columns,
             body: this.getBody(layer),
         });
 
