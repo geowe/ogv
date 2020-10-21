@@ -5,6 +5,9 @@ import { VectorImage as VectorImageLayer, Vector as VectorLayer } from 'ol/layer
 import page3 from './report/Page3';
 import page4 from './report/Page4';
 import geowebg from '../../ui/img/geowe-bg.jpg';
+// import ogvLogo2Azul from '../../ui/img/ogv-logo2-negro.png';
+// import ogvLogo2Azul from '../../ui/img/ogv-logo2-azul-40x20.png';
+import ogvLogo2Azul from '../../ui/img/ogv-azul.png';
 
 const PDF_PARAMETER = {
     orientation: 'p',
@@ -67,7 +70,8 @@ class ReportGeneratorTool {
             this._doc.setFontStyle('normal');
             this._doc.setFontSize(8);
             this._doc.text(LEFT_MARGIN, 8, 'OGV - GeoWE.org');
-            this._doc.line(LEFT_MARGIN, 9, 200, 9);
+            this._doc.line(LEFT_MARGIN, 9, 180, 9);
+            this._doc.addImage(ogvLogo2Azul, 'PNG', 180, 1);
 
             // await reportHeaderTemplate.addHeader(this._doc, headerInfo);
 
@@ -133,7 +137,7 @@ class ReportGeneratorTool {
         );
     }
 
-    async addDisclaimer() {
+    addDisclaimer() {
         this._doc.addPage();
         const y = 20;
         this._doc.setFontStyle('bold');
