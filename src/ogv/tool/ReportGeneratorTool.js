@@ -5,8 +5,6 @@ import { VectorImage as VectorImageLayer, Vector as VectorLayer } from 'ol/layer
 import page3 from './report/Page3';
 import page4 from './report/Page4';
 import geowebg from '../../ui/img/geowe-bg.jpg';
-// import ogvLogo2Azul from '../../ui/img/ogv-logo2-negro.png';
-// import ogvLogo2Azul from '../../ui/img/ogv-logo2-azul-40x20.png';
 import ogvLogo2Azul from '../../ui/img/ogv-azul.png';
 
 const PDF_PARAMETER = {
@@ -19,6 +17,7 @@ const LEFT_MARGIN = 10;
 const RIGHT_MARGIN = 10;
 const PDF_IN_MM = 210;
 const QR_CODE_SIZE = 50;
+const FORM_FIELD_COLOR = 'rgb(255, 255, 200)';
 
 const DISCLAIMER = `La información presentada en este informe ha sido generada dinámicamente a partir de los orígenes de datos geográficos visualizados en OGV, los cuales son propiedad de sus respectivos dueños y pueden cambiar en el tiempo.
 
@@ -59,7 +58,7 @@ class ReportGeneratorTool {
         this._doc.save(PDF_FILE_NAME);
     }
 
-    async addHeaderAndPageNumber(headerInfo) {
+    addHeaderAndPageNumber(headerInfo) {
         var pageCount = this._doc.internal.getNumberOfPages();
 
         var num = pageCount;
@@ -70,8 +69,12 @@ class ReportGeneratorTool {
             this._doc.setFontStyle('normal');
             this._doc.setFontSize(8);
             this._doc.text(LEFT_MARGIN, 8, 'OGV - GeoWE.org');
-            this._doc.line(LEFT_MARGIN, 9, 180, 9);
-            this._doc.addImage(ogvLogo2Azul, 'PNG', 180, 1);
+
+            // this._doc.line(LEFT_MARGIN, 9, 180, 9);
+            this._doc.line(LEFT_MARGIN, 9, this._doc.internal.pageSize.getWidth() - 27, 9);
+            this._doc.addImage(ogvLogo2Azul, 'PNG', this._doc.internal.pageSize.getWidth() - 27, 1);
+
+            // this._doc.addImage(ogvLogo2Azul, 'PNG', 180, 1);
 
             // await reportHeaderTemplate.addHeader(this._doc, headerInfo);
 
@@ -99,6 +102,7 @@ class ReportGeneratorTool {
     }
 
     centeredText(text, y, size = 12) {
+        let lineHeight = 50;
         this._doc.setFontSize(size);
         var textWidth =
             (this._doc.getStringUnitWidth(text) * this._doc.internal.getFontSize()) /
@@ -109,9 +113,11 @@ class ReportGeneratorTool {
         else {
             const lines = this._doc.splitTextToSize(text, PDF_IN_MM - LEFT_MARGIN - RIGHT_MARGIN);
             this._doc.text(LEFT_MARGIN, y, lines);
+            lineHeight = 10 * lines.length * 0.5;
         }
         this._doc.setFontStyle('normal');
-        // const lineHeight = 10 * lines.length * 0.5;
+
+        return lineHeight;
     }
 
     async addPage1(screenshotConfig, title) {
@@ -139,10 +145,11 @@ class ReportGeneratorTool {
 
     addDisclaimer() {
         this._doc.addPage();
-        const y = 20;
+        this._doc.setFillColor(FORM_FIELD_COLOR);
+        this._doc.rect(LEFT_MARGIN - 1, 18, 190, 48, 'FD');
+        const y = 21;
         this._doc.setFontStyle('bold');
-        this._doc.setFontSize(14);
-        this.centeredText(DISCLAIMER, y);
+        this.centeredText(DISCLAIMER, y, 10);
     }
 
     async addPage2(screenshotConfig) {
@@ -158,9 +165,6 @@ class ReportGeneratorTool {
 
     getLayers() {
         const layers = [];
-        // alert('count: ' + this._map.getLayers().getArray().length);
-
-        // this._map.getLayers().forEach((layer) => {
         const currentLayers = this._map.getLayers().getArray();
         for (const layer of currentLayers) {
             if (layer instanceof VectorImageLayer || layer instanceof VectorLayer) {

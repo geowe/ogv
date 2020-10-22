@@ -2,7 +2,11 @@ import TileLayer from 'ol/layer/Tile';
 import LayerTypeName from '../layer/LayerTypeName';
 import domtoimage from 'dom-to-image-more';
 import QRCode from 'easyqrcodejs/dist/easy.qrcode.min';
-import logo from '../../ui/img/geowe-logo-cuadrado.jpg';
+// import logo from '../../ui/img/geowe-logo-cuadrado.jpg';
+import logoQR from '../../ui/img/geowe-qr.png';
+// import ogvLogo2Azul from '../../ui/img/ogv-azul.png';
+import ogvWater from '../../ui/img/ogv-water.png';
+
 const html2canvas = require('html2canvas');
 
 const DIN_A4 = [190, 210];
@@ -64,6 +68,7 @@ export class MapScreenshotTool {
                         const mapContext = canvas.getContext('2d');
                         this.addHeatMap(mapContext);
                         await this.addLegend(mapContext);
+                        await this.addWaterGeoWELogo(mapContext);
                         // await this.addQRCode(mapContext);
 
                         document.getElementById('map').style.width = `100%`;
@@ -71,12 +76,6 @@ export class MapScreenshotTool {
                         this._map.updateSize();
 
                         this.finish(canvas, resolve, autoDonwload);
-
-                        // this._map.setSize(size);
-
-                        // this._map.getView().setResolution(viewResolution);
-
-                        // this._map.updateSize();
                     })
                     .catch((err) => {
                         alert('No se permite la captura del mapa');
@@ -90,9 +89,6 @@ export class MapScreenshotTool {
         document.getElementById('map').style.width = `${widthPixel}px`; // '2244px';
         document.getElementById('map').style.height = `${heightPixel}px`; // '2480px';
         this._map.updateSize();
-
-        // var printSize = [widthPixel, heightPixel];
-        // this._map.setSize(printSize);
 
         setTimeout(() => {
             this._map.renderSync();
@@ -180,18 +176,16 @@ export class MapScreenshotTool {
     async showQrCode() {
         this._loadMonitorPanel.show('Generando código QR del mapa...');
         const promise = new Promise((resolve, reject) => {
-            const qrSize = 200; // this.getQRCodeSize();
+            const qrSize = 200;
             const data = window.location.href;
 
             const qrCodeElement = document.getElementById('qrCode');
-            // if (!screenshot) qrCodeElement.innerHTML = '';
 
             const qrcode = new QRCode(qrCodeElement, {
-                // colorDark: '#8f8e8c',
                 width: qrSize,
                 height: qrSize,
                 text: data,
-                logo: logo,
+                logo: logoQR,
                 logoWidth: undefined,
                 logoHeight: undefined,
                 logoBackgroundColor: '#ffffff',
@@ -224,6 +218,22 @@ export class MapScreenshotTool {
                 resolve();
             };
             img.src = qrCodeImage;
+        });
+
+        return promise;
+    }
+
+    async addWaterGeoWELogo(mapContext) {
+        const promise = new Promise((resolve, reject) => {
+            const img = new Image();
+
+            img.onload = () => {
+                const mapWidth = this._map.getSize()[0];
+                const mapHeight = this._map.getSize()[1];
+                mapContext.drawImage(img, mapWidth - img.width, mapHeight - img.height - 5);
+                resolve();
+            };
+            img.src = ogvWater;
         });
 
         return promise;
