@@ -1,6 +1,6 @@
 import { FileLoader } from './FileLoader';
 import Parameter from '../Parameter';
-const proxyURL = 'http://www.geowe.org/proxy/proxy.php?url=';
+const proxyURL = 'https://www.geowe.org/proxy/proxy.php?url=';
 export class UrlFileLoader extends FileLoader {
     constructor(mapSetting) {
         super(mapSetting);
@@ -26,8 +26,9 @@ export class UrlFileLoader extends FileLoader {
 
     loadUrlFile(url, proxy = false) {
         this._loadMonitorPanel.show('Cargando url...');
+        const request = proxy ? proxyURL + url : url;
 
-        fetch(proxy ? proxyURL + url : url)
+        fetch(request)
             .then((response) => {
                 this._loadMonitorPanel.show('Cargando datos...');
                 return response.json();
