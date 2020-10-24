@@ -3,51 +3,63 @@ import { Cluster } from 'ol/source.js';
 import { BaseLayer } from './BaseLayer';
 import { ClusterLayerStyle } from '../style/ClusterLayerStyle';
 import LayerTypeName from './LayerTypeName';
+import simpleLayerLegend from '../legend/SimpleLayerLegend';
 
 const DEFAULT_DISTANCE = 20;
 export class ClusterLayer extends BaseLayer {
-  constructor (features) {
-    super(features, LayerTypeName.CLUSTER_LAYER);
-    this._style = new ClusterLayerStyle();
-  }
+    constructor(features) {
+        super(features, LayerTypeName.CLUSTER_LAYER);
+        this._style = new ClusterLayerStyle();
 
-  setSetting (layerSetting) {
-    const distanceValue = layerSetting[LayerTypeName.CLUSTER_LAYER].distance;
-    if (distanceValue !== undefined && distanceValue !== '') { this._distance = distanceValue; }
-  }
+        this.setLayerLegend(simpleLayerLegend);
+    }
 
-  setFeatures (features) {
-    super.setFeatures(features);
-    this.convertToSimpleFeatures();
-  }
+    setSetting(layerSetting) {
+        const distanceValue = layerSetting[LayerTypeName.CLUSTER_LAYER].distance;
+        if (distanceValue !== undefined && distanceValue !== '') {
+            this._distance = distanceValue;
+        }
+    }
 
-  getEmptyLayer () {
-    this._layer = this.createLayer([], this._distance);
-    return this.getLayer();
-  }
+    setFeatures(features) {
+        super.setFeatures(features);
+        this.convertToSimpleFeatures();
+    }
 
-  getLayerFromFeatures () {
-    this._layer = this.createLayer(this.getFeatures(), this._distance);
-    return this.getLayer();
-  }
+    getEmptyLayer(layerName) {
+        this._layer = this.createLayer([], this._distance, layerName);
+        return this.getLayer();
+    }
 
-  createLayer (features, distance) {
-    distance = (distance === undefined) ? DEFAULT_DISTANCE : distance;
+    getLayerFromFeatures(layerName) {
+        this._layer = this.createLayer(this.getFeatures(), this._distance, layerName);
+        return this.getLayer();
+    }
 
-    var clusterSource = new Cluster({
-      distance: distance,
-      source: this.getVectorSource(features),
-      geometryFunction: function (feature) {
-        var geom = feature.getGeometry();
-        if (geom.getType() === 'Point' || geom.getType() === 'MultiPoint') { return geom; } else { return geom.getInteriorPoint(); }
-      }
-    });
+    createLayer(features, distance, layerName) {
+        distance = distance === undefined ? DEFAULT_DISTANCE : distance;
 
-    this._style.nextLayerColor();
+        var clusterSource = new Cluster({
+            distance: distance,
+            source: this.getVectorSource(features),
+            geometryFunction: function(feature) {
+                var geom = feature.getGeometry();
+                if (geom.getType() === 'Point' || geom.getType() === 'MultiPoint') {
+                    return geom;
+                } else {
+                    return geom.getInteriorPoint();
+                }
+            },
+        });
 
-    return new Vector({
-      source: clusterSource,
-      style: this._style.getStyle.bind(this._style)
-    });
-  }
+        this._style.nextLayerColor();
+
+        const vector = new Vector({
+            source: clusterSource,
+            style: this._style.getStyle.bind(this._style),
+        });
+
+        vector.set('name', layerName);
+        return vector;
+    }
 }

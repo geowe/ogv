@@ -1,10 +1,10 @@
 .legendPanel {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: .8rem;
+    font-size: 0.8rem;
     font-weight: bold;
     position: fixed;
     left: 10px;
-    bottom: 50px;
+    bottom: 90px;
     z-index: 2;
 }
 

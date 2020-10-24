@@ -1,20 +1,81 @@
-<div class="w3-sidebar  w3-border-right w3-animate-left w3-white w3-card-4" style="z-index: 3;left:10px;bottom:30px;top:90px;width:200px;display:none;font-family: Arial, Helvetica, sans-serif;font-size: .8rem;" id="elementContent">
+<div class="w3-sidebar w3-border-right w3-animate-left w3-white w3-card-4" style="
+        position: relative;
+        left: 0px;
+        top: -14px;
+        width: 220px;
+        display: none;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 0.8rem;
+        z-index: 80;
+    " id="elementContent">
+    <!-- <a class="container w3-btn w3-red" id="closeContentButton">Cerrar</a>
+    <div id="headerFeatureInfo" class="w3-indigo w3-card-4"></div> -->
+    <div class="w3-panel w3-indigo w3-card-4" style="opacity: 0.7">
+        <label class="w3-left-align w3-large" style="position: absolute; top: 5px">Información</label
+        >
+        <!-- <a class="w3-btn w3-red w3-right" style="height: 100%; right: 0px" id="closeContentButton">Cerrar</a -->
+        <button
+            id="closeContentButton"
+            class="w3-btn w3-ripple w3-large w3-indigo w3-right w3-padding-small"
+            style="width: 36px; height: 36px"
+        >
+            <b><i class="far fa-times-circle"></i></b>
+        </button>
+    </div>
 
-    <a class="container w3-btn w3-ripple ogv-info-panel-button" style="font-size:10px;border-radius: 8px;" id="closeContentButton">Cerrar</a>
+    <div>
+        <!-- <div class="w3-panel">
+            <p class="w3-card-4 w3-indigo w3-center" style="margin: 0px; font-weight: bold">
+                Información
+            </p>
+        </div> -->
 
-    <div style="overflow-y:auto;max-height:50vh;bottom:30px;">
-        <div class="w3-panel">
-            <p class="w3-card-4 w3-indigo w3-center" style="margin:0px;font-weight: bold;">Información</p>
+        <div
+            class="w3-margin"
+            style="overflow-y: auto; overflow-x: hidden; max-height: 50vh; bottom: 30px"
+            id="content"
+        ></div>
+
+        <!-- <div class="w3-panel">
+            <p class="w3-card-4 w3-indigo w3-center" style="margin: 0px; font-weight: bold">
+                Geometría
+            </p>
+        </div>
+        <div class="w3-margin" id="spatialContent"></div> -->
+
+        <div class="w3-container w3-hide">
+            <div class="w3-margin" id="spatialContent"></div>
         </div>
 
-        <div class="w3-margin" id="content"></div>
+        <!-- <a
+            class="container w3-btn w3-ripple ogv-info-panel-button"
+            style="font-size: 10px; border-radius: 8px"
+            id="wktButton"
+            ><i class="ms ms-txt-o"></i> WKT</a
+        > -->
+        <!-- <a
+            class="container w3-btn w3-ripple ogv-info-panel-button"
+            style="font-size: 10px; border-radius: 8px"
+            id="featureButton"
+            ><i class="ms ms-vector"></i> Feature</a
+        > -->
+        <div class="w3-container">
+            <button
+                id="wktButton"
+                class="w3-btn w3-ripple w3-small w3-indigo w3-right"
+                style="height: 36px"
+            >
+                <b><i class="ms ms-txt-o"></i> WKT</b>
+            </button>
 
-        <div class="w3-panel">
-            <p class="w3-card-4 w3-indigo w3-center" style="margin:0px;font-weight: bold;">Geometría</p>
+            <button
+                id="featureButton"
+                class="w3-btn w3-ripple w3-small w3-indigo w3-right"
+                style="height: 36px; right: 10px"
+            >
+                <b><i class="ms ms-vector"></i> GeoJSON </b>
+            </button>
         </div>
-        <div class="w3-margin" id="spatialContent"></div>
-        <a class="container w3-btn w3-ripple ogv-info-panel-button" style="font-size:10px;border-radius: 8px;" id="wktButton"><i class="ms ms-txt-o"></i> WKT</a>
-        <a class="container w3-btn w3-ripple ogv-info-panel-button" style="font-size:10px;border-radius: 8px;" id="featureButton"><i class="ms ms-vector"></i> Feature</a>
-        <br>
+        <br />
     </div>
 </div>
