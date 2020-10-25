@@ -20,7 +20,10 @@ export class FileLoader {
     }
 
     getFeatureCollection(geojson) {
-        var fc = this._geojsonFormat.readFeatures(geojson, { featureProjection: 'EPSG:3857' });
+        var fc = this._geojsonFormat.readFeatures(geojson, {
+            dataProjection: 'EPSG:4326',
+            featureProjection: 'EPSG:3857',
+        });
         return fc;
     }
 
