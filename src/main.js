@@ -1,3 +1,4 @@
+import '@fortawesome/fontawesome-free/css/all.css';
 import './ui/MainTemplate';
 import { SelectTool } from './ogv/tool/SelectTool';
 import { UrlFileLoader } from './ogv/loader/UrlFileLoader';
@@ -7,15 +8,21 @@ import { TitleMapTool } from './ogv/tool/TitleMapTool';
 import { AddBasemapTool } from './ogv/tool/AddBasemapTool';
 import { OverviewTool } from './ogv/tool/OverviewTool';
 import { FullScreenTool } from './ogv/tool/FullScreenTool';
+import { MapScreenshotTool } from './ogv/tool/MapScreenshotTool';
+import basemapBuilder from './ogv/catalog/BasemapBuilder';
+import menuTool from './ogv/tool/MenuTool';
 import { HTMLWidget } from './ui/HTMLWidget';
 
 const mapSetting = new MapSetting();
 const setting = mapSetting.getSetting();
+basemapBuilder.setMapSetting(setting);
+menuTool.configure(setting);
 new FullScreenTool(setting);
 new AddBasemapTool(setting);
 new OverviewTool(setting);
 new TitleMapTool(setting);
 new SelectTool(setting);
 new AddLayerTool(mapSetting);
+new MapScreenshotTool(mapSetting);
 new UrlFileLoader(mapSetting).load();
 // new HTMLWidget();

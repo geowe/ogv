@@ -7,8 +7,20 @@ body {
     position: fixed;
     top: 0px;
     /*top: -16px;*/
+    height: 36px;
     width: 100%;
-    z-index: 4;
+    z-index: 5;
+    opacity: 0.6;
+}
+
+#headerData {
+    position: fixed;
+    top: 0px;
+    /*top: -16px;*/
+    height: 36px;
+    width: 100%;
+    z-index: 76;
+    /* opacity: 0.5; */
 }
 
 #widgetHtmlButton:hover {
@@ -23,17 +35,24 @@ body {
     text-align: center;
     line-height: 150%;
     font-size: 1.85em;
+    color: white;
+}
+
+#subTitle {
+    color: white;
 }
 
 #map {
     position: fixed;
     width: 100%;
     height: 100%;
+    /* top: 36px; */
+    top: 0px;
     z-index: 1;
 }
 
 .ol-scale-line {
-    margin-bottom: 50px;
+    margin-bottom: 10px;
     left: 82px;
     /*border-color: rgb(255, 150, 0);*/
     /* #3f51b5;*/
@@ -60,7 +79,8 @@ body {
     border-radius: 4px 0 0;
     height: 1.1em;
     line-height: 1em;
-    max-width: calc(100% - 1.3em);
+    /* max-width: calc(100% - 1.3em); */
+    font-size: 10px;
 }
 
 .ol-attribution.ol-uncollapsible img {}
@@ -99,6 +119,14 @@ div.ol-rotate {
     right: 0;
 }
 
+.ogv-tool {
+    background-color: rgb(255, 150, 0) !important;
+}
+
+.ogv-info-panel-button {
+    background-color: rgb(244, 67, 54) !important;
+}
+
 .map:-webkit-full-screen {
     height: 100%;
     margin: 0;
@@ -110,14 +138,6 @@ div.ol-rotate {
 
 .map:fullscreen {
     height: 100%;
-}
-
-.ogv-tool {
-    background-color: rgb(255, 150, 0) !important;
-}
-
-.ogv-info-panel-button {
-    background-color: rgb(244, 67, 54) !important;
 }
 
 .fullscreen:-webkit-full-screen {

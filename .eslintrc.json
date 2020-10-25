@@ -1,11 +1,13 @@
 {
     "env": {
         "browser": true,
-        "es6": true
+        "es6": true,
+        "jest": true
     },
-    "extends": [
-        "standard"
-    ],
+
+    "extends": ["standard", "prettier"],
+
+    "plugins": ["prettier"],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
@@ -16,6 +18,13 @@
     },
     "rules": {
         "semi": [2, "always"],
-        "indent": 2
+        "indent": [2, 4],
+        "new-cap": [
+            0,
+            {
+                "capIsNew": true,
+                "newIsCap": false
+            }
+        ]
     }
 }
