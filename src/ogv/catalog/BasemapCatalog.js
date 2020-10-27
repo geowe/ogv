@@ -68,6 +68,11 @@ class BasemapCatalog {
                 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png'
             );
         };
+
+        this.catalog[CatalogLayerName.RIOJA_BASE] = () => {
+            return this.getBaseRioja();
+        };
+
         // this.catalog[CatalogLayerName.BING_MAP] = () => { return basemapBuilder.getBingMap(BINGMAP_KEY) };
     }
 
@@ -147,6 +152,13 @@ class BasemapCatalog {
                 '/' +
                 // 'Agricultural_Lands_Pastures_2000/default/2018-08-15/' +
                 'GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg',
+        });
+    }
+
+    getBaseRioja() {
+        return basemapBuilder.getXYZLayer({
+            attributions: '<font size="0.5">«CC BY 4.0 www.iderioja.org»</font>',
+            url: 'https://rts.larioja.org/mapa-base/rioja/{z}/{x}/{y}.jpg',
         });
     }
 }
