@@ -17,7 +17,7 @@ const CatalogLayerName = Object.freeze({
     OSM_KLOKANTECH3D: 'osm-klokantech-3d',
     OSM_WIKIMEDIA: 'osm-wikimedia',
     BING_MAP: 'bing-map',
-    RIOJA_BASE: 'base_rioja',
+    RIOJA_BASE: 'rioja-base',
 });
 
 export default CatalogLayerName;

@@ -1,6 +1,6 @@
 {
     "name": "ogv",
-    "version": "2.16.9",
+    "version": "2.16.11",
     "description": "Open Geodata Viewer",
     "main": "./src/main.js",
     "scripts": {
@@ -35,8 +35,7 @@
         "name": "José María",
         "email": "jose@geowe.org"
     },
-    "contributors": [
-        {
+    "contributors": [{
             "name": "Atanasio Muñoz",
             "email": "ata@geowe.org"
         },
