@@ -168,6 +168,7 @@ export class MapScreenshotTool {
     }
 
     enableProxy(state = true) {
+        if (!this._raster) return;
         this.clearTileLayers(this._map);
         const raster = state ? this._rasterProxy : this._raster;
         this._map.addLayer(raster);
