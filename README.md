@@ -79,6 +79,7 @@ Como resultado se creará una carpeta con el nombre **dist** que contiene todos 
 -   Mapas con renderizado de imágenes.
 -   Visualización y descarga del código QR del mapa.
 -   Descarga del mapa en formato PNG y JPG.
+-   Descarga del informe de mapa en formato PDF.
 
 ## Ejemplos de uso
 
