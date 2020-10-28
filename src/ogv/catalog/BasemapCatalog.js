@@ -69,8 +69,8 @@ class BasemapCatalog {
             );
         };
 
-        this.catalog[CatalogLayerName.RIOJA_BASE] = () => {
-            return this.getBaseRioja();
+        this.catalog[CatalogLayerName.RIOJA_BASE] = (proxy) => {
+            return this.getBaseRioja(proxy);
         };
 
         // this.catalog[CatalogLayerName.BING_MAP] = () => { return basemapBuilder.getBingMap(BINGMAP_KEY) };
@@ -155,10 +155,11 @@ class BasemapCatalog {
         });
     }
 
-    getBaseRioja() {
+    getBaseRioja(proxy) {
         return basemapBuilder.getXYZLayer({
             attributions: '<font size="0.5">«CC BY 4.0 www.iderioja.org»</font>',
             url: 'https://rts.larioja.org/mapa-base/rioja/{z}/{x}/{y}.jpg',
+            proxy: proxy,
         });
     }
 }

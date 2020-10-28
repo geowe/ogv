@@ -112,6 +112,9 @@ class BasemapBuilder {
                     layerSettings.attributions :
                     NO_ATTRIBUTION_MESSAGE,
                 url: layerSettings.url,
+                tileLoadFunction: layerSettings.proxy ?
+                    proxyTileLoader.load.bind(proxyTileLoader) :
+                    undefined,
             }),
         });
     }

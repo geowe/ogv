@@ -78,7 +78,7 @@ export class MapScreenshotTool {
                         this.finish(canvas, resolve, autoDonwload);
                     })
                     .catch((err) => {
-                        alert('No se permite la captura del mapa');
+                        alert('No se permite la captura del mapa: ' + err.message);
                         this.enableProxy(false);
                         this._loadMonitorPanel.hide();
                         resolve({});
