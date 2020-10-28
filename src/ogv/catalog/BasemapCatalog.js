@@ -40,8 +40,8 @@ class BasemapCatalog {
         this.catalog[CatalogLayerName.PNOA_MOSAIC] = (proxy) => {
             return this.getPNOA('OI.MosaicElement', proxy);
         };
-        this.catalog[CatalogLayerName.NASA] = () => {
-            return this.getNASA();
+        this.catalog[CatalogLayerName.NASA] = (proxy) => {
+            return this.getNASA(proxy);
         };
         this.catalog[CatalogLayerName.OSM] = () => {
             return basemapBuilder.getOSM();
@@ -138,7 +138,7 @@ class BasemapCatalog {
         });
     }
 
-    getNASA() {
+    getNASA(proxy) {
         const currentDate = new Date();
         currentDate.setDate(currentDate.getDate() - 1);
         const parameterDate = currentDate.toISOString().slice(0, 10);
@@ -152,13 +152,14 @@ class BasemapCatalog {
                 '/' +
                 // 'Agricultural_Lands_Pastures_2000/default/2018-08-15/' +
                 'GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg',
+            proxy: proxy,
         });
     }
 
     getBaseRioja(proxy) {
         return basemapBuilder.getXYZLayer({
             attributions: '<font size="0.5">«CC BY 4.0 www.iderioja.org»</font>',
-            url: 'https://rts.larioja.org/mapa-base/rioja/{z}/{x}/{y}.jpg',
+            url: 'https://rts.larioja.org/mapa-base/rioja/{z}/{x}/{y}.png',
             proxy: proxy,
         });
     }
