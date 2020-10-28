@@ -1,6 +1,6 @@
 {
     "name": "ogv",
-    "version": "2.16.11",
+    "version": "2.16.12",
     "description": "Open Geodata Viewer",
     "main": "./src/main.js",
     "scripts": {
