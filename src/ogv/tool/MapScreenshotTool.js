@@ -78,7 +78,7 @@ export class MapScreenshotTool {
                         this.finish(canvas, resolve, autoDonwload);
                     })
                     .catch((err) => {
-                        alert('No se permite la captura del mapa');
+                        alert('No se permite la captura del mapa: ' + err.message);
                         this.enableProxy(false);
                         this._loadMonitorPanel.hide();
                         resolve({});
@@ -168,6 +168,7 @@ export class MapScreenshotTool {
     }
 
     enableProxy(state = true) {
+        if (!this._raster) return;
         this.clearTileLayers(this._map);
         const raster = state ? this._rasterProxy : this._raster;
         this._map.addLayer(raster);

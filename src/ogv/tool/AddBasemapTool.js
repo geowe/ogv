@@ -23,7 +23,7 @@ export class AddBasemapTool {
             raster = basemapCatalog.getDefaultRasterLayer();
         }
 
-        raster.setOpacity(parseFloat(setting.basemapOpacity));
+        if (raster !== undefined) raster.setOpacity(parseFloat(setting.basemapOpacity));
         return raster;
     }
 }

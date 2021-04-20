@@ -1,4 +1,5 @@
-const proxy = '//www.geowe.org/proxy/wmsTiledProxy.php?url=';
+// const WMS_PROXY = '//www.geowe.org/proxy/wmsTiledProxy.php?url=';
+const proxy = '//www.geowe.org/proxy/xyzTiledProxy.php?url=';
 
 class ProxyTileLoader {
     constructor() {
