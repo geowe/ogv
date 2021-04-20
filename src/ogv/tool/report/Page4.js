@@ -11,9 +11,14 @@ class Page4 {
         for (const layer of layers) {
             const columns = this.getHead(layer);
             const columnsCount = columns[0].length;
-
-            if (columnsCount > MAX_COLUMN_DEFAULT) doc.addPage('a4', 'landscape');
-            else doc.addPage();
+            let pageTableWidth = 190;
+            if (columnsCount > MAX_COLUMN_DEFAULT){
+                doc.addPage('a4', 'landscape');
+            } 
+            else {
+                doc.addPage();
+                pageTableWidth = 320;
+            }
 
             if (count === 1) {
                 doc.setFontStyle('bold');
@@ -36,28 +41,36 @@ class Page4 {
         }
     }
 
-    addTable(doc, layer, y, columns) {
+    addTable(doc, layer, y, columns,pageTableWidth) {        
         doc.autoTable({
             margin: { top: 20, left: LEFT_MARGIN },
             startY: y,
             tableLineColor: [189, 195, 199],
             tableLineWidth: 0.75,
-            tableWidth: 'wrap',
+            tableWidth: pageTableWidth,
             headStyles: {
                 fillColor: [204, 204, 204],
                 textColor: [78, 53, 73],
                 lineWidth: 0.2,
+                minCellWidth: pageTableWidth/columns[0].length,
+                font: 'times',
+                fontSize: 10,
+                lineColor: 0,
+                halign: 'left',
+                overflow: 'linebreak',
+                cellPadding: 2,
             },
             styles: {
-                cellWidth: 'wrap',
+                minCellWidth: 30,
                 font: 'times',
-                fontSize: 6,
+                fontSize: 8,
                 lineWidth: 0.2,
                 lineColor: 0,
-                halign: 'center',
+                halign: 'left',
                 overflow: 'linebreak',
+                cellPadding: 2,            
             },
-
+            
             head: columns,
             body: this.getBody(layer),
         });

@@ -1,6 +1,6 @@
 {
     "name": "ogv",
-    "version": "2.16.12",
+    "version": "2.16.13",
     "description": "Open Geodata Viewer",
     "main": "./src/main.js",
     "scripts": {
@@ -35,7 +35,8 @@
         "name": "José María",
         "email": "jose@geowe.org"
     },
-    "contributors": [{
+    "contributors": [
+        {
             "name": "Atanasio Muñoz",
             "email": "ata@geowe.org"
         },
@@ -72,7 +73,7 @@
         "jspdf": "1.4.1",
         "jspdf-autotable": "3.5.3",
         "mapskin": "^1.0.0",
-        "ol": "^6.4.3",
+        "ol": "^6.5.0",
         "qr-with-logo": "^1.0.4",
         "w3css": "^2.7.0"
     },
